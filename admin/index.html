@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JoJo's Shave Ice - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #FFD60A;
+        }
+        h1 {
+            color: #87CEEB;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        .nav-item {
+            padding: 10px 20px;
+            background-color: #87CEEB;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .nav-item:hover {
+            background-color: #5a9ac2;
+        }
+        .card {
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-header {
+            background-color: #87CEEB;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>JoJo's Shave Ice - Admin</h1>
+    
+    <div class="container">
+        <h2 class="text-center mb-4">Admin Dashboard</h2>
+        
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h4>Location Management</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Manage store locations, addresses, and Asana integration settings.</p>
+                        <a href="locations.html" class="btn btn-primary w-100">Go to Locations</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h4>Project Management</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Configure Asana projects, sections, and view tasks for each location.</p>
+                        <a href="projects.html" class="btn btn-primary w-100">Go to Projects</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="text-center mt-5 text-muted">
+        <p>JoJo's Shave Ice Admin Portal &copy; 2023</p>
+    </footer>
+</body>
+</html> 

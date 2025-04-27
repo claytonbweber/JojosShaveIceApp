@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JoJo's Shave Ice - Project Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #FFD60A;
+        }
+        h1 {
+            color: #87CEEB;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .project {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .section {
+            margin-left: 20px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button, .button {
+            background-color: #FF4040;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        button:hover, .button:hover {
+            background-color: #d93333;
+        }
+        .button.secondary {
+            background-color: #87CEEB;
+        }
+        .button.secondary:hover {
+            background-color: #5a9ac2;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        #status, #projectStatus, #sectionStatus {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        .nav-item {
+            padding: 10px 20px;
+            background-color: #87CEEB;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .nav-item.active {
+            background-color: #FF4040;
+        }
+        #projectList, #sectionsList {
+            margin-top: 20px;
+        }
+        .toggle-btn {
+            background-color: transparent;
+            border: none;
+            color: #87CEEB;
+            font-weight: bold;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+        }
+        .hidden {
+            display: none;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+        }
+        .schedule-option {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .radio-group {
+            margin-top: 10px;
+        }
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+        .radio-item input[type="radio"] {
+            width: auto;
+        }
+        .selected-option {
+            background-color: #e9f5ff;
+            border-color: #87CEEB;
+        }
+        .task {
+            margin-left: 20px;
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            background-color: white;
+            border-radius: 3px;
+            margin-bottom: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .task-list {
+            margin-top: 15px;
+        }
+        .task-completed {
+            text-decoration: line-through;
+            color: #777;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .view-tasks-btn {
+            background-color: #87CEEB;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .view-tasks-btn:hover {
+            background-color: #5a9ac2;
+        }
+        
+        /* Task styling */
+        #task-container {
+            margin-top: 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            padding: 15px;
+        }
+        
+        #task-container h3 {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 1.4rem;
+        }
+        
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .task-item {
+            background-color: white;
+            border: 1px solid #e9ecef;
+            border-radius: 0.25rem;
+            padding: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
+        
+        .task-item:hover {
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+        }
+        
+        .task-item h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: #495057;
+        }
+        
+        .task-notes {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: #f8f9fa;
+            border-radius: 0.25rem;
+            border-left: 3px solid #dee2e6;
+        }
+        
+        .task-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+        
+        .task-due-date {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .task-completed {
+            opacity: 0.7;
+        }
+        
+        .task-completed h4 {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+        
+        .badge {
+            padding: 0.5em 0.8em;
+            border-radius: 50rem;
+        }
+        
+        .bg-success {
+            background-color: #28a745 !important;
+        }
+        
+        .bg-warning {
+            background-color: #ffc107 !important;
+        }
+        
+        /* Section list styling */
+        #sections-list {
+            margin-bottom: 20px;
+        }
+        
+        .project-section-item {
+            cursor: pointer;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .project-section-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .project-section-item.active {
+            background-color: #e2f0fb;
+            border-left: 3px solid #007bff;
+        }
+        
+        #task-container {
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .task-item {
+            background-color: white;
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-left: 3px solid #007bff;
+        }
+        
+        .task-item.task-completed {
+            opacity: 0.7;
+            border-left-color: #28a745;
+        }
+        
+        .task-item h4 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        
+        .task-notes {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+            white-space: pre-line;
+        }
+        
+        .task-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .task-due-date {
+            color: #dc3545;
+            font-weight: 500;
+        }
+        
+        .task-list {
+            margin-top: 15px;
+        }
+        
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: #87CEEB;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .form-select, .form-control {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+        }
+        
+        .d-none {
+            display: none !important;
+        }
+        
+        .d-flex {
+            display: flex !important;
+        }
+        
+        .justify-content-center {
+            justify-content: center !important;
+        }
+        
+        .spinner-border {
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            vertical-align: text-bottom;
+            border: 0.25em solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: spinner-border .75s linear infinite;
+        }
+        
+        @keyframes spinner-border {
+            to { transform: rotate(360deg); }
+        }
+        
+        .visually-hidden {
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            padding: 0 !important;
+            margin: -1px !important;
+            overflow: hidden !important;
+            clip: rect(0, 0, 0, 0) !important;
+            white-space: nowrap !important;
+            border: 0 !important;
+        }
+        
+        .mt-4 {
+            margin-top: 1.5rem !important;
+        }
+        
+        .mb-3 {
+            margin-bottom: 1rem !important;
+        }
+        
+        .text-decoration-none {
+            text-decoration: none !important;
+        }
+        
+        .btn {
+            display: inline-block;
+            font-weight: 400;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            user-select: none;
+            border: 1px solid transparent;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: 0.25rem;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        
+        .btn-primary {
+            color: #fff;
+            background-color: #FF4040;
+            border-color: #FF4040;
+        }
+        
+        .btn-primary:hover {
+            background-color: #d93333;
+            border-color: #d93333;
+        }
+        
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            border-radius: 0.2rem;
+        }
+        
+        .btn-outline-primary {
+            color: #FF4040;
+            background-color: transparent;
+            background-image: none;
+            border-color: #FF4040;
+        }
+        
+        .btn-outline-primary:hover {
+            color: #fff;
+            background-color: #FF4040;
+            border-color: #FF4040;
+        }
+        
+        .alert {
+            position: relative;
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+            border-radius: 0.25rem;
+        }
+        
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <h1>JoJo's Shave Ice - Admin</h1>
+    
+    <div class="nav">
+        <a href="locations.html" class="nav-item">Manage Locations</a>
+        <a href="projects.html" class="nav-item active">Manage Projects</a>
+    </div>
+    
+    <div class="container">
+        <h2>Manage Asana Projects</h2>
+        <p>Create and configure Asana projects to connect with the app. Projects need to have specific sections to organize tasks properly.</p>
+        
+        <div class="form-group">
+            <label for="locationSelect">Select Location:</label>
+            <select id="locationSelect">
+                <option value="">Loading locations...</option>
+            </select>
+        </div>
+        
+        <div id="locationInfo" class="hidden">
+            <h3>Location Details</h3>
+            <p><strong>Selected Location:</strong> <span id="selectedLocationName"></span></p>
+            <p><strong>Asana User ID:</strong> <span id="asanaUserId"></span></p>
+            <p><strong>Asana PAT:</strong> <span id="asanaPAT"></span></p>
+        </div>
+        
+        <div id="projectsContainer" class="hidden">
+            <h3>Asana Projects</h3>
+            <button id="fetchProjects" class="button secondary">Fetch Projects from Asana</button>
+            <div id="projectStatus"></div>
+            
+            <div id="projectList"></div>
+            
+            <h3>Add New Project</h3>
+            <div class="form-group">
+                <label for="projectName">Project Name:</label>
+                <input type="text" id="projectName" placeholder="Enter project name">
+            </div>
+            <button id="createProject" class="button">Create Project in Asana</button>
+        </div>
+        
+        <div id="project-details" class="container mt-4 d-none">
+            <div class="row mb-3">
+                <div class="col">
+                    <h3 id="project-name"></h3>
+                    <a href="#" id="back-to-projects" class="text-decoration-none">&larr; Back to Projects</a>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Project Sections</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="sections-list"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-8">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>Schedule Configuration</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="schedule-form">
+                                <div class="mb-3">
+                                    <label for="frequency" class="form-label">Frequency</label>
+                                    <select id="frequency" class="form-select">
+                                        <option value="daily">Daily</option>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3" id="day-select-container">
+                                    <label for="day" class="form-label">Day</label>
+                                    <select id="day" class="form-select">
+                                        <option value="1">Monday</option>
+                                        <option value="2">Tuesday</option>
+                                        <option value="3">Wednesday</option>
+                                        <option value="4">Thursday</option>
+                                        <option value="5">Friday</option>
+                                        <option value="6">Saturday</option>
+                                        <option value="0">Sunday</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="time" class="form-label">Time</label>
+                                    <input type="time" id="time" class="form-control" required>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">Save Schedule</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Tasks Container -->
+                    <div id="task-container">
+                        <h3>Select a section to view tasks</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCgEDfRBjbqqnwWc0TeR97V3RvfrvjJu1U",
+            authDomain: "jojo-s-app-back-end.firebaseapp.com",
+            projectId: "jojo-s-app-back-end",
+            storageBucket: "jojo-s-app-back-end.firebasestorage.app",
+            messagingSenderId: "344579778389",
+            appId: "1:344579778389:web:6a17be1a1d13b82955f1dc",
+            measurementId: "G-VBP44WBTCP"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        // State
+        let selectedLocation = null;
+        let currentProjects = [];
+        let currentSections = [];
+        let currentProjectId = null;
+        
+        // DOM Elements
+        const locationSelect = document.getElementById('locationSelect');
+        const locationInfo = document.getElementById('locationInfo');
+        const selectedLocationName = document.getElementById('selectedLocationName');
+        const asanaUserId = document.getElementById('asanaUserId');
+        const asanaPAT = document.getElementById('asanaPAT');
+        const projectsContainer = document.getElementById('projectsContainer');
+        const fetchProjectsBtn = document.getElementById('fetchProjects');
+        const projectStatus = document.getElementById('projectStatus');
+        const projectList = document.getElementById('projectList');
+        const projectDetail = document.getElementById('projectDetail');
+        const currentProjectNameSpan = document.getElementById('currentProjectName');
+        const currentProjectIdSpan = document.getElementById('currentProjectId');
+        const sectionsList = document.getElementById('sectionsList');
+        const createProjectBtn = document.getElementById('createProject');
+        const projectNameInput = document.getElementById('projectName');
+        const createSectionBtn = document.getElementById('createSection');
+        const sectionNameInput = document.getElementById('sectionName');
+        const sectionStatus = document.getElementById('sectionStatus');
+        const backToProjectsBtn = document.getElementById('back-to-projects');
+        const scheduleBySection = document.getElementById('scheduleBySection');
+        const scheduleByDay = document.getElementById('scheduleByDay');
+        const daySelectionSection = document.getElementById('daySelectionSection');
+        const saveScheduleBtn = document.getElementById('saveSchedule');
+        const scheduleStatus = document.getElementById('scheduleStatus');
+        const dayCheckboxes = document.querySelectorAll('input[name="day"]');
+        
+        // Load locations from Firestore
+        async function loadLocations() {
+            try {
+                const locationsSnapshot = await db.collection('locations').get();
+                const locations = [];
+                
+                locationsSnapshot.forEach(doc => {
+                    locations.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                if (locations.length === 0) {
+                    locationSelect.innerHTML = '<option value="">No locations found</option>';
+                    return;
+                }
+                
+                locationSelect.innerHTML = '<option value="">Select a location</option>';
+                locations.forEach(location => {
+                    const option = document.createElement('option');
+                    option.value = location.id;
+                    option.textContent = location.locationName;
+                    option.dataset.asanaUserId = location.asanaUserId;
+                    option.dataset.asanaPAT = location.asanaPAT;
+                    locationSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading locations:', error);
+                locationSelect.innerHTML = '<option value="">Error loading locations</option>';
+            }
+        }
+        
+        // Select location change handler
+        locationSelect.addEventListener('change', function() {
+            const selectedOption = locationSelect.options[locationSelect.selectedIndex];
+            
+            if (!selectedOption.value) {
+                locationInfo.classList.add('hidden');
+                projectsContainer.classList.add('hidden');
+                projectDetail.classList.add('hidden');
+                return;
+            }
+            
+            selectedLocation = {
+                id: selectedOption.value,
+                name: selectedOption.textContent,
+                asanaUserId: selectedOption.dataset.asanaUserId,
+                asanaPAT: selectedOption.dataset.asanaPAT
+            };
+            
+            // Display location info
+            selectedLocationName.textContent = selectedLocation.name;
+            asanaUserId.textContent = selectedLocation.asanaUserId;
+            asanaPAT.textContent = selectedLocation.asanaPAT;
+            
+            locationInfo.classList.remove('hidden');
+            projectsContainer.classList.remove('hidden');
+            projectDetail.classList.add('hidden');
+        });
+        
+        // Fetch projects from Asana
+        fetchProjectsBtn.addEventListener('click', async function() {
+            if (!selectedLocation || !selectedLocation.asanaPAT) {
+                projectStatus.innerHTML = '<p class="error">No location selected or missing Asana PAT</p>';
+                return;
+            }
+            
+            projectStatus.innerHTML = '<p>Fetching projects from Asana...</p>';
+            
+            try {
+                const asanaUrl = `https://app.asana.com/api/1.0/workspaces`;
+                const headers = {
+                    'Authorization': `Bearer ${selectedLocation.asanaPAT}`,
+                    'Content-Type': 'application/json'
+                };
+                
+                // First get workspaces
+                const workspacesResponse = await fetch(asanaUrl, { headers });
+                if (!workspacesResponse.ok) {
+                    throw new Error(`Failed to fetch workspaces: ${workspacesResponse.statusText}`);
+                }
+                
+                const workspacesData = await workspacesResponse.json();
+                const workspaces = workspacesData.data;
+                
+                if (workspaces.length === 0) {
+                    projectStatus.innerHTML = '<p class="error">No workspaces found for this user</p>';
+                    return;
+                }
+                
+                // For simplicity, we'll use the first workspace
+                const workspaceId = workspaces[0].gid;
+                
+                // Now get projects in this workspace
+                const projectsUrl = `https://app.asana.com/api/1.0/workspaces/${workspaceId}/projects`;
+                const projectsResponse = await fetch(projectsUrl, { headers });
+                
+                if (!projectsResponse.ok) {
+                    throw new Error(`Failed to fetch projects: ${projectsResponse.statusText}`);
+                }
+                
+                const projectsData = await projectsResponse.json();
+                currentProjects = projectsData.data;
+                
+                if (currentProjects.length === 0) {
+                    projectStatus.innerHTML = '<p class="error">No projects found in workspace</p>';
+                    projectList.innerHTML = '';
+                    return;
+                }
+                
+                // Display projects
+                projectStatus.innerHTML = '<p class="success">Projects loaded successfully!</p>';
+                await displayProjects(currentProjects);
+            } catch (error) {
+                console.error('Error fetching projects:', error);
+                projectStatus.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        });
+        
+        // Display projects in the list
+        async function displayProjects(projects) {
+            projectList.innerHTML = '<h4>Available Projects</h4>';
+            
+            // First fetch all project configurations for this location
+            const projectConfigs = {};
+            try {
+                const configsSnapshot = await db.collection('projectConfigurations')
+                    .where('locationId', '==', selectedLocation.id)
+                    .get();
+                
+                configsSnapshot.forEach(doc => {
+                    const config = doc.data();
+                    projectConfigs[config.projectId] = config;
+                });
+            } catch (error) {
+                console.error('Error loading project configurations:', error);
+            }
+            
+            projects.forEach(project => {
+                const config = projectConfigs[project.gid];
+                let scheduleInfo = 'Not scheduled';
+                let scheduleClass = 'error';
+                
+                if (config) {
+                    if (config.frequency) {
+                        scheduleInfo = `Scheduled ${config.frequency} at ${config.time}`;
+                        if (config.day && config.frequency !== 'daily') {
+                            const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                            scheduleInfo += ` on ${dayNames[config.day]}`;
+                        }
+                        scheduleClass = 'success';
+                    }
+                }
+                
+                const projectDiv = document.createElement('div');
+                projectDiv.className = 'project';
+                projectDiv.innerHTML = `
+                    <h4>${project.name}</h4>
+                    <p><strong>Project ID:</strong> ${project.gid}</p>
+                    <p class="${scheduleClass}"><strong>Schedule:</strong> ${scheduleInfo}</p>
+                    <div class="actions">
+                        <button class="button view-project" data-id="${project.gid}" data-name="${project.name}">
+                            View Details & Configure
+                        </button>
+                    </div>
+                `;
+                projectList.appendChild(projectDiv);
+            });
+            
+            // Add event listeners to view project buttons
+            document.querySelectorAll('.view-project').forEach(button => {
+                button.addEventListener('click', function() {
+                    const projectId = this.dataset.id;
+                    const projectName = this.dataset.name;
+                    viewProject(projectId, projectName);
+                });
+            });
+        }
+        
+        // Create a new project in Asana
+        createProjectBtn.addEventListener('click', async function() {
+            if (!selectedLocation || !selectedLocation.asanaPAT) {
+                projectStatus.innerHTML = '<p class="error">No location selected or missing Asana PAT</p>';
+                return;
+            }
+            
+            const projectName = projectNameInput.value.trim();
+            if (!projectName) {
+                projectStatus.innerHTML = '<p class="error">Please enter a project name</p>';
+                return;
+            }
+            
+            projectStatus.innerHTML = '<p>Creating project in Asana...</p>';
+            
+            try {
+                // First get workspaces
+                const workspacesUrl = `https://app.asana.com/api/1.0/workspaces`;
+                const headers = {
+                    'Authorization': `Bearer ${selectedLocation.asanaPAT}`,
+                    'Content-Type': 'application/json'
+                };
+                
+                const workspacesResponse = await fetch(workspacesUrl, { headers });
+                
+                if (!workspacesResponse.ok) {
+                    throw new Error(`Failed to fetch workspaces: ${workspacesResponse.statusText}`);
+                }
+                
+                const workspacesData = await workspacesResponse.json();
+                const workspaces = workspacesData.data;
+                
+                if (workspaces.length === 0) {
+                    throw new Error('No workspaces found for this user');
+                }
+                
+                // For simplicity, we'll use the first workspace
+                const workspaceId = workspaces[0].gid;
+                
+                // Create new project
+                const createProjectUrl = `https://app.asana.com/api/1.0/projects`;
+                const body = JSON.stringify({
+                    data: {
+                        name: projectName,
+                        workspace: workspaceId
+                    }
+                });
+                
+                const createResponse = await fetch(createProjectUrl, {
+                    method: 'POST',
+                    headers,
+                    body
+                });
+                
+                if (!createResponse.ok) {
+                    throw new Error(`Failed to create project: ${createResponse.statusText}`);
+                }
+                
+                const createData = await createResponse.json();
+                const newProject = createData.data;
+                
+                projectStatus.innerHTML = `<p class="success">Project "${newProject.name}" created successfully!</p>`;
+                projectNameInput.value = '';
+                
+                // Refresh project list
+                currentProjects.push(newProject);
+                await displayProjects(currentProjects);
+            } catch (error) {
+                console.error('Error creating project:', error);
+                projectStatus.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        });
+        
+        // Initialize the project details view
+        function initProjectDetails() {
+            const projectDetailDiv = document.getElementById('project-details');
+            const projectNameElement = document.getElementById('project-name');
+            const backToProjectsBtn = document.getElementById('back-to-projects');
+            
+            // Set up back button
+            backToProjectsBtn.addEventListener('click', () => {
+                projectDetailDiv.classList.add('d-none');
+                projectsContainer.classList.remove('hidden');
+            });
+            
+            // Add event listener for section selection
+            document.getElementById('sections-list').addEventListener('click', async (e) => {
+                const sectionItem = e.target.closest('.project-section-item');
+                if (sectionItem) {
+                    // Remove active class from all sections
+                    document.querySelectorAll('.project-section-item').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    
+                    // Add active class to selected section
+                    sectionItem.classList.add('active');
+                    
+                    // Fetch tasks for the selected section
+                    const sectionId = sectionItem.dataset.sectionId;
+                    const sectionName = sectionItem.dataset.sectionName;
+                    await fetchTasks(sectionId, sectionName);
+                }
+            });
+        }
+        
+        // Show project details and sections
+        async function viewProject(projectId, projectName) {
+            if (!selectedLocation || !selectedLocation.asanaPAT) {
+                return;
+            }
+            
+            currentProjectId = projectId;
+            
+            // Update UI for project details view
+            const projectDetailDiv = document.getElementById('project-details');
+            const projectNameElement = document.getElementById('project-name');
+            
+            projectNameElement.textContent = projectName;
+            projectsContainer.classList.add('hidden');
+            projectDetailDiv.classList.remove('d-none');
+            
+            // Initialize project details if not already done
+            initProjectDetails();
+            
+            // Fetch sections for this project
+            try {
+                const sectionsUrl = `https://app.asana.com/api/1.0/projects/${projectId}/sections`;
+                const headers = {
+                    'Authorization': `Bearer ${selectedLocation.asanaPAT}`,
+                    'Content-Type': 'application/json'
+                };
+                
+                const sectionsResponse = await fetch(sectionsUrl, { headers });
+                
+                if (!sectionsResponse.ok) {
+                    throw new Error(`Failed to fetch sections: ${sectionsResponse.statusText}`);
+                }
+                
+                const sectionsData = await sectionsResponse.json();
+                currentSections = sectionsData.data;
+                
+                // Display sections
+                showProjectSections(currentSections);
+            } catch (error) {
+                console.error('Error fetching sections:', error);
+                document.getElementById('sections-list').innerHTML = `
+                    <div class="alert alert-danger">
+                        Error loading sections: ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        // Show project sections with task support
+        function showProjectSections(sections) {
+            const sectionsContainer = document.getElementById('sections-list');
+            let html = '';
+            
+            if (sections.length === 0) {
+                html += '<p>No sections found in this project.</p>';
+            } else {
+                sections.forEach(section => {
+                    html += `
+                        <div class="project-section-item" data-section-id="${section.gid}" data-section-name="${section.name}">
+                            ${section.name}
+                        </div>
+                    `;
+                });
+            }
+            
+            sectionsContainer.innerHTML = html;
+        }
+        
+        // Load schedule configuration form
+        function loadScheduleForm() {
+            const scheduleForm = document.getElementById('schedule-form');
+            const frequencySelect = document.getElementById('frequency');
+            const daySelectContainer = document.getElementById('day-select-container');
+            
+            frequencySelect.addEventListener('change', () => {
+                const frequency = frequencySelect.value;
+                if (frequency === 'daily') {
+                    daySelectContainer.classList.add('d-none');
+                } else {
+                    daySelectContainer.classList.remove('d-none');
+                }
+            });
+            
+            scheduleForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                if (!selectedLocation || !currentProjectId) {
+                    alert('Missing required information');
+                    return;
+                }
+                
+                const frequency = frequencySelect.value;
+                const time = document.getElementById('time').value;
+                let day = null;
+                
+                if (frequency !== 'daily') {
+                    day = document.getElementById('day').value;
+                }
+                
+                try {
+                    // Save to Firestore
+                    const scheduleConfig = {
+                        projectId: currentProjectId,
+                        frequency,
+                        time,
+                        day,
+                        locationId: selectedLocation.id,
+                        updatedAt: new Date().toISOString()
+                    };
+                    
+                    await db.collection('projectConfigurations').doc(currentProjectId).set(
+                        scheduleConfig, 
+                        { merge: true }
+                    );
+                    
+                    alert('Schedule saved successfully!');
+                } catch (error) {
+                    console.error('Error saving schedule:', error);
+                    alert(`Error saving schedule: ${error.message}`);
+                }
+            });
+        }
+        
+        // Function to fetch and display tasks for a section
+        async function fetchTasks(sectionId, sectionName) {
+            try {
+                const taskContainer = document.getElementById('task-container');
+                taskContainer.innerHTML = '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+                
+                // Use the Asana API directly since we already have the PAT
+                const tasksUrl = `https://app.asana.com/api/1.0/sections/${sectionId}/tasks`;
+                const headers = {
+                    'Authorization': `Bearer ${selectedLocation.asanaPAT}`,
+                    'Content-Type': 'application/json'
+                };
+                
+                const tasksResponse = await fetch(tasksUrl, { headers });
+                
+                if (!tasksResponse.ok) {
+                    throw new Error(`Failed to fetch tasks: ${tasksResponse.statusText}`);
+                }
+                
+                const tasksData = await tasksResponse.json();
+                const tasks = tasksData.data;
+                
+                // Get full task details for each task
+                const tasksWithDetails = await Promise.all(tasks.map(async (task) => {
+                    try {
+                        const taskDetailUrl = `https://app.asana.com/api/1.0/tasks/${task.gid}`;
+                        const detailResponse = await fetch(taskDetailUrl, { headers });
+                        
+                        if (!detailResponse.ok) {
+                            console.error(`Failed to fetch details for task ${task.gid}`);
+                            return task;
+                        }
+                        
+                        const detailData = await detailResponse.json();
+                        return detailData.data;
+                    } catch (error) {
+                        console.error(`Error fetching task details for ${task.gid}:`, error);
+                        return task;
+                    }
+                }));
+                
+                displayTasks(tasksWithDetails, sectionName, sectionId);
+                
+            } catch (error) {
+                console.error('Error fetching tasks:', error);
+                document.getElementById('task-container').innerHTML = `
+                    <div class="alert alert-danger">
+                        Failed to load tasks. Please try again.
+                    </div>
+                `;
+            }
+        }
+        
+        // Display tasks in the DOM
+        function displayTasks(tasks, sectionName, sectionId) {
+            const taskContainer = document.getElementById('task-container');
+            
+            // Sort tasks: completed last, then by due date
+            tasks.sort((a, b) => {
+                if (a.completed !== b.completed) {
+                    return a.completed ? 1 : -1;
+                }
+                
+                if (!a.due_on && !b.due_on) return 0;
+                if (!a.due_on) return 1;
+                if (!b.due_on) return -1;
+                
+                return new Date(a.due_on) - new Date(b.due_on);
+            });
+            
+            let html = `
+                <h3>${sectionName} Tasks</h3>
+                <p>${tasks.length} task${tasks.length !== 1 ? 's' : ''} found</p>
+                <div class="task-list">
+            `;
+            
+            if (tasks.length === 0) {
+                html += '<p>No tasks found in this section.</p>';
+            } else {
+                tasks.forEach(task => {
+                    const completedClass = task.completed ? 'task-completed' : '';
+                    const completedBadge = task.completed ? 
+                        '<span class="badge bg-success">Completed</span> ' : '';
+                    
+                    html += `
+                        <div class="task-item ${completedClass}" data-task-id="${task.gid}">
+                            <h4>${task.name}</h4>
+                            ${task.notes ? `<div class="task-notes">${task.notes}</div>` : ''}
+                            <div class="task-meta">
+                                <div>
+                                    ${completedBadge}
+                                    ${task.due_on ? formatDueDate(task.due_on) : ''}
+                                </div>
+                                <a href="https://app.asana.com/0/${sectionId}/${task.gid}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    Open in Asana
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            html += '</div>';
+            taskContainer.innerHTML = html;
+        }
+        
+        // Format due date with appropriate styling
+        function formatDueDate(dueDate) {
+            if (!dueDate) return '';
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const dueDateObj = new Date(dueDate);
+            dueDateObj.setHours(0, 0, 0, 0);
+            
+            const dateFormatted = dueDateObj.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric'
+            });
+            
+            if (dueDateObj < today) {
+                return `<span class="badge bg-danger">Overdue: ${dateFormatted}</span>`;
+            } else if (dueDateObj.getTime() === today.getTime()) {
+                return `<span class="badge bg-warning text-dark">Due Today</span>`;
+            } else if (dueDateObj.getTime() === tomorrow.getTime()) {
+                return `<span class="badge bg-info text-dark">Due Tomorrow</span>`;
+            } else {
+                return `<span class="badge bg-secondary">Due: ${dateFormatted}</span>`;
+            }
+        }
+        
+        // Initialize - load locations and set up event handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLocations();
+            loadScheduleForm();
+        });
+    </script>
+</body>
+</html> 

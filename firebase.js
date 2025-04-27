@@ -1,25 +1,18 @@
-import { initializeApp, getApps } from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBpkq5DgX3elAU1aBLAYbyUZJ6gF8_pcvE",
-  authDomain: "jojo-s-management-app.firebaseapp.com",
-  projectId: "jojo-s-management-app",
-  storageBucket: "jojo-s-management-app.firebasestorage.app",
-  messagingSenderId: "1057424025658",
-  appId: "1:1057424025658:web:954b5ad6109119b4136d03",
-  measurementId: "G-2SHLDTH3NB"
+  apiKey: "AIzaSyCgEDfRBjbqqnwWc0TeR97V3RvfrvjJu1U",
+  authDomain: "jojo-s-app-back-end.firebaseapp.com",
+  projectId: "jojo-s-app-back-end",
+  storageBucket: "jojo-s-app-back-end.firebasestorage.app",
+  messagingSenderId: "344579778389",
+  appId: "1:344579778389:web:6a17be1a1d13b82955f1dc",
+  measurementId: "G-VBP44WBTCP"
 };
 
-// In your Firebase config file
-try {
-  // Initialize Firebase
-  if (!getApps().length) {
-    initializeApp(firebaseConfig);
-  }
-} catch (error) {
-  console.log("Firebase initialization error:", error);
-}
-
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app)
+export const db = getFirestore(app);

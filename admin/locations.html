@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JoJo's Shave Ice - Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #FFD60A;
+        }
+        h1 {
+            color: #87CEEB;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .location {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #FF4040;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #d93333;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        .nav-item {
+            padding: 10px 20px;
+            background-color: #87CEEB;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .nav-item.active {
+            background-color: #FF4040;
+        }
+    </style>
+</head>
+<body>
+    <h1>JoJo's Shave Ice - Admin</h1>
+    
+    <div class="nav">
+        <a href="locations.html" class="nav-item active">Manage Locations</a>
+        <a href="projects.html" class="nav-item">Manage Projects</a>
+    </div>
+    
+    <div class="container">
+        <h2>Initialize Locations in Firestore</h2>
+        <p>This tool will add the following three locations to your Firestore database:</p>
+        
+        <div class="location">
+            <h3>Location 1: CMP</h3>
+            <p><strong>Email:</strong> cmp@jojosshaveice.com</p>
+            <p><strong>Password:</strong> makanalani123</p>
+            <p><strong>Asana User ID:</strong> <span class="placeholder">placeholder_cmp_user_id</span></p>
+            <p><strong>Asana PAT:</strong> <span class="placeholder">placeholder_cmp_pat</span></p>
+        </div>
+        
+        <div class="location">
+            <h3>Location 2: Waimea</h3>
+            <p><strong>Email:</strong> waimea@jojosshaveice.com</p>
+            <p><strong>Password:</strong> makanalani123</p>
+            <p><strong>Asana User ID:</strong> <span class="placeholder">1200920151705039</span> (Extracted from PAT)</p>
+            <p><strong>Asana PAT:</strong> <span class="placeholder">2/1200920151705039/1210090774570638:7bae19d55b919896e44d2ef8d68a3525</span></p>
+        </div>
+        
+        <div class="location">
+            <h3>Location 3: Hanalei</h3>
+            <p><strong>Email:</strong> hanalei@jojosshaveice.com</p>
+            <p><strong>Password:</strong> makanalani123</p>
+            <p><strong>Asana User ID:</strong> <span class="placeholder">placeholder_hanalei_user_id</span></p>
+            <p><strong>Asana PAT:</strong> <span class="placeholder">placeholder_hanalei_pat</span></p>
+        </div>
+        
+        <button id="initButton">Initialize Locations</button>
+        
+        <div id="status"></div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCgEDfRBjbqqnwWc0TeR97V3RvfrvjJu1U",
+            authDomain: "jojo-s-app-back-end.firebaseapp.com",
+            projectId: "jojo-s-app-back-end",
+            storageBucket: "jojo-s-app-back-end.firebasestorage.app",
+            messagingSenderId: "344579778389",
+            appId: "1:344579778389:web:6a17be1a1d13b82955f1dc",
+            measurementId: "G-VBP44WBTCP"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Location data
+        const locations = [
+            {
+                locationName: 'CMP',
+                locationEmail: 'cmp@jojosshaveice.com',
+                locationPassword: 'makanalani123',
+                asanaUserId: 'placeholder_cmp_user_id',
+                asanaUserEmail: 'cmp@jojosshaveice.com',
+                asanaPAT: 'placeholder_cmp_pat',
+                active: true,
+                notes: ''
+            },
+            {
+                locationName: 'Waimea',
+                locationEmail: 'waimea@jojosshaveice.com',
+                locationPassword: 'makanalani123',
+                asanaUserId: '1200920151705039',
+                asanaUserEmail: 'waimea@jojosshaveice.com',
+                asanaPAT: '2/1200920151705039/1210090774570638:7bae19d55b919896e44d2ef8d68a3525',
+                active: true,
+                notes: ''
+            },
+            {
+                locationName: 'Hanalei',
+                locationEmail: 'hanalei@jojosshaveice.com',
+                locationPassword: 'makanalani123',
+                asanaUserId: 'placeholder_hanalei_user_id',
+                asanaUserEmail: 'hanalei@jojosshaveice.com',
+                asanaPAT: 'placeholder_hanalei_pat',
+                active: true,
+                notes: ''
+            }
+        ];
+
+        // Button click handler
+        document.getElementById('initButton').addEventListener('click', async () => {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = '<p>Initializing locations...</p>';
+            statusDiv.className = '';
+            
+            try {
+                // Add each location to Firestore
+                for (const location of locations) {
+                    await db.collection('locations').doc(location.locationName).set(location);
+                    statusDiv.innerHTML += `<p>Added location: ${location.locationName}</p>`;
+                }
+                
+                statusDiv.innerHTML += '<p class="success">All locations added successfully!</p>';
+                statusDiv.className = 'success';
+            } catch (error) {
+                console.error('Error initializing locations:', error);
+                statusDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+                statusDiv.className = 'error';
+            }
+        });
+    </script>
+</body>
+</html> 
