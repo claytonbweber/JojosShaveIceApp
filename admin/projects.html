@@ -739,6 +739,62 @@
                 max-width: 100%;
             }
         }
+        
+        /* Section styling */
+        .section-schedule-item {
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .section-schedule-item:hover {
+            background-color: rgba(135, 206, 235, 0.1);
+        }
+        
+        .section-schedule-item.active {
+            background-color: #e9ecef;
+            border-color: #87CEEB;
+        }
+        
+        .section-days {
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        .section-day-selector {
+            margin-top: 10px;
+            padding: 8px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .form-text {
+            display: block;
+            margin-top: 4px;
+            margin-bottom: 6px;
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+        
+        .mt-2 {
+            margin-top: 0.5rem !important;
+        }
+        
+        .form-check-label {
+            font-size: 0.85rem;
+        }
+        
+        /* Checkbox sizes for better mobile experience */
+        .form-check-input {
+            min-width: 16px;
+            min-height: 16px;
+            margin-right: 3px;
+        }
     </style>
 </head>
 <body>
@@ -874,35 +930,35 @@
                                     </div>
                                 </div>
                                 
-                                <div id="days-selection" class="mb-3">
-                                    <label class="form-label">Select Days</label>
+                                <div id="whole-project-days" class="mb-3">
+                                    <label class="form-label">Select Days for Whole Project</label>
                                     <div class="day-checkboxes">
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" id="day-0" name="days" value="0" class="form-check-input">
+                                            <input type="checkbox" id="day-0" name="days" value="0" class="form-check-input project-day">
                                             <label for="day-0" class="form-check-label">Sun</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" id="day-1" name="days" value="1" class="form-check-input">
+                                            <input type="checkbox" id="day-1" name="days" value="1" class="form-check-input project-day">
                                             <label for="day-1" class="form-check-label">Mon</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" id="day-2" name="days" value="2" class="form-check-input">
+                                            <input type="checkbox" id="day-2" name="days" value="2" class="form-check-input project-day">
                                             <label for="day-2" class="form-check-label">Tue</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" id="day-3" name="days" value="3" class="form-check-input">
+                                            <input type="checkbox" id="day-3" name="days" value="3" class="form-check-input project-day">
                                             <label for="day-3" class="form-check-label">Wed</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" id="day-4" name="days" value="4" class="form-check-input">
+                                            <input type="checkbox" id="day-4" name="days" value="4" class="form-check-input project-day">
                                             <label for="day-4" class="form-check-label">Thu</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" id="day-5" name="days" value="5" class="form-check-input">
+                                            <input type="checkbox" id="day-5" name="days" value="5" class="form-check-input project-day">
                                             <label for="day-5" class="form-check-label">Fri</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" id="day-6" name="days" value="6" class="form-check-input">
+                                            <input type="checkbox" id="day-6" name="days" value="6" class="form-check-input project-day">
                                             <label for="day-6" class="form-check-label">Sat</label>
                                         </div>
                                     </div>
@@ -971,35 +1027,35 @@
                                         </div>
                                     </div>
                                     
-                                    <div id="days-selection" class="mb-3">
-                                        <label class="form-label">Select Days</label>
+                                    <div id="whole-project-days" class="mb-3">
+                                        <label class="form-label">Select Days for Whole Project</label>
                                         <div class="day-checkboxes">
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" id="day-0" name="days" value="0" class="form-check-input">
+                                                <input type="checkbox" id="day-0" name="days" value="0" class="form-check-input project-day">
                                                 <label for="day-0" class="form-check-label">Sun</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" id="day-1" name="days" value="1" class="form-check-input">
+                                                <input type="checkbox" id="day-1" name="days" value="1" class="form-check-input project-day">
                                                 <label for="day-1" class="form-check-label">Mon</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" id="day-2" name="days" value="2" class="form-check-input">
+                                                <input type="checkbox" id="day-2" name="days" value="2" class="form-check-input project-day">
                                                 <label for="day-2" class="form-check-label">Tue</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" id="day-3" name="days" value="3" class="form-check-input">
+                                                <input type="checkbox" id="day-3" name="days" value="3" class="form-check-input project-day">
                                                 <label for="day-3" class="form-check-label">Wed</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" id="day-4" name="days" value="4" class="form-check-input">
+                                                <input type="checkbox" id="day-4" name="days" value="4" class="form-check-input project-day">
                                                 <label for="day-4" class="form-check-label">Thu</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" id="day-5" name="days" value="5" class="form-check-input">
+                                                <input type="checkbox" id="day-5" name="days" value="5" class="form-check-input project-day">
                                                 <label for="day-5" class="form-check-label">Fri</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" id="day-6" name="days" value="6" class="form-check-input">
+                                                <input type="checkbox" id="day-6" name="days" value="6" class="form-check-input project-day">
                                                 <label for="day-6" class="form-check-label">Sat</label>
                                             </div>
                                         </div>
@@ -1086,7 +1142,8 @@
             const scheduleWholeProject = document.getElementById('schedule-whole-project');
             const sectionScheduleContainer = document.getElementById('section-schedule-container');
             const sectionScheduleList = document.getElementById('section-schedule-list');
-            const dayCheckboxes = document.querySelectorAll('input[name="days"]');
+            const wholeProjectDays = document.getElementById('whole-project-days');
+            const projectDayCheckboxes = document.querySelectorAll('.project-day');
             const daysError = document.getElementById('days-error');
             
             let activeSectionId = null;
@@ -1095,6 +1152,8 @@
             scheduleBySection.addEventListener('change', () => {
                 if (scheduleBySection.checked) {
                     sectionScheduleContainer.classList.remove('d-none');
+                    wholeProjectDays.classList.add('d-none');
+                    
                     // Populate sections if they're not already
                     if (sectionScheduleList.children.length === 0 && currentSections.length > 0) {
                         populateSectionList();
@@ -1105,49 +1164,30 @@
             scheduleWholeProject.addEventListener('change', () => {
                 if (scheduleWholeProject.checked) {
                     sectionScheduleContainer.classList.add('d-none');
+                    wholeProjectDays.classList.remove('d-none');
                     activeSectionId = null;
+                    
                     // Reset all day checkboxes to match project settings when switching back
                     updateDayCheckboxesForProject();
                 }
             });
             
+            // Set initial visibility based on the selected radio button
+            if (scheduleBySection.checked) {
+                sectionScheduleContainer.classList.remove('d-none');
+                wholeProjectDays.classList.add('d-none');
+            } else {
+                sectionScheduleContainer.classList.add('d-none');
+                wholeProjectDays.classList.remove('d-none');
+            }
+            
             // Day selection change handler
-            dayCheckboxes.forEach(checkbox => {
+            projectDayCheckboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', () => {
                     // Remove error message if at least one day is selected
-                    const anyChecked = Array.from(dayCheckboxes).some(cb => cb.checked);
+                    const anyChecked = Array.from(projectDayCheckboxes).some(cb => cb.checked);
                     if (anyChecked) {
                         daysError.classList.remove('show');
-                    }
-                    
-                    // Update section schedule if in section mode
-                    if (scheduleBySection.checked && activeSectionId) {
-                        const selectedDays = [];
-                        dayCheckboxes.forEach(cb => {
-                            if (cb.checked) {
-                                selectedDays.push(parseInt(cb.value));
-                            }
-                        });
-                        
-                        if (!sectionSchedules[activeSectionId]) {
-                            sectionSchedules[activeSectionId] = {};
-                        }
-                        
-                        sectionSchedules[activeSectionId].days = selectedDays;
-                        
-                        // Update section item display
-                        const sectionItem = document.querySelector(`.section-schedule-item[data-section-id="${activeSectionId}"]`);
-                        if (sectionItem) {
-                            const dayLabels = selectedDays.map(day => {
-                                const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-                                return dayNames[day];
-                            }).join(', ');
-                            
-                            const sectionDaysDiv = sectionItem.querySelector('.section-days');
-                            if (sectionDaysDiv) {
-                                sectionDaysDiv.textContent = selectedDays.length > 0 ? 'Days: ' + dayLabels : 'No days selected';
-                            }
-                        }
                     }
                 });
             });
@@ -1182,49 +1222,118 @@
                     sectionItem.innerHTML = `
                         <div><strong>${section.name}</strong></div>
                         <div class="section-days">${selectedDays.length > 0 ? 'Days: ' + dayLabels : 'No days selected'}</div>
+                        <div class="section-day-selector mt-2 ${section.gid === activeSectionId ? '' : 'd-none'}">
+                            <div class="day-checkboxes">
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" id="section-day-0-${section.gid}" value="0" class="form-check-input section-day" data-section-id="${section.gid}" ${selectedDays.includes(0) ? 'checked' : ''}>
+                                    <label for="section-day-0-${section.gid}" class="form-check-label">Sun</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" id="section-day-1-${section.gid}" value="1" class="form-check-input section-day" data-section-id="${section.gid}" ${selectedDays.includes(1) ? 'checked' : ''}>
+                                    <label for="section-day-1-${section.gid}" class="form-check-label">Mon</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" id="section-day-2-${section.gid}" value="2" class="form-check-input section-day" data-section-id="${section.gid}" ${selectedDays.includes(2) ? 'checked' : ''}>
+                                    <label for="section-day-2-${section.gid}" class="form-check-label">Tue</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" id="section-day-3-${section.gid}" value="3" class="form-check-input section-day" data-section-id="${section.gid}" ${selectedDays.includes(3) ? 'checked' : ''}>
+                                    <label for="section-day-3-${section.gid}" class="form-check-label">Wed</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" id="section-day-4-${section.gid}" value="4" class="form-check-input section-day" data-section-id="${section.gid}" ${selectedDays.includes(4) ? 'checked' : ''}>
+                                    <label for="section-day-4-${section.gid}" class="form-check-label">Thu</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" id="section-day-5-${section.gid}" value="5" class="form-check-input section-day" data-section-id="${section.gid}" ${selectedDays.includes(5) ? 'checked' : ''}>
+                                    <label for="section-day-5-${section.gid}" class="form-check-label">Fri</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" id="section-day-6-${section.gid}" value="6" class="form-check-input section-day" data-section-id="${section.gid}" ${selectedDays.includes(6) ? 'checked' : ''}>
+                                    <label for="section-day-6-${section.gid}" class="form-check-label">Sat</label>
+                                </div>
+                            </div>
+                        </div>
                     `;
                     
-                    sectionItem.addEventListener('click', () => {
+                    sectionScheduleList.appendChild(sectionItem);
+                    
+                    // Add event listener for section checkboxes
+                    sectionItem.querySelectorAll('.section-day').forEach(checkbox => {
+                        checkbox.addEventListener('change', () => {
+                            const sectionId = checkbox.dataset.sectionId;
+                            updateSectionDays(sectionId);
+                        });
+                    });
+                    
+                    // Add event listener for selecting a section
+                    sectionItem.addEventListener('click', (e) => {
+                        // Don't trigger when clicking on checkbox
+                        if (e.target.classList.contains('section-day') || e.target.classList.contains('form-check-label')) {
+                            return;
+                        }
+                        
                         // Remove active class from all sections
                         document.querySelectorAll('.section-schedule-item').forEach(el => {
                             el.classList.remove('active');
                         });
                         
+                        // Hide all section day selectors
+                        document.querySelectorAll('.section-day-selector').forEach(el => {
+                            el.classList.add('d-none');
+                        });
+                        
                         // Add active class to selected section
                         sectionItem.classList.add('active');
                         
-                        // Set active section and update day checkboxes
+                        // Show day selector for this section
+                        const daySelector = sectionItem.querySelector('.section-day-selector');
+                        if (daySelector) {
+                            daySelector.classList.remove('d-none');
+                        }
+                        
+                        // Set active section
                         activeSectionId = section.gid;
-                        updateDayCheckboxesForSection(section.gid);
                     });
-                    
-                    sectionScheduleList.appendChild(sectionItem);
                 });
             }
             
-            // Update day checkboxes based on section schedule
-            function updateDayCheckboxesForSection(sectionId) {
-                // First clear all checkboxes
-                dayCheckboxes.forEach(checkbox => {
-                    checkbox.checked = false;
+            // Function to update section days in the sectionSchedules object
+            function updateSectionDays(sectionId) {
+                const checkboxes = document.querySelectorAll(`.section-day[data-section-id="${sectionId}"]`);
+                const selectedDays = [];
+                
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        selectedDays.push(parseInt(checkbox.value));
+                    }
                 });
                 
-                // Then check the appropriate days
-                if (sectionSchedules[sectionId] && sectionSchedules[sectionId].days) {
-                    const selectedDays = sectionSchedules[sectionId].days;
-                    selectedDays.forEach(day => {
-                        const checkbox = document.getElementById(`day-${day}`);
-                        if (checkbox) {
-                            checkbox.checked = true;
-                        }
-                    });
+                if (!sectionSchedules[sectionId]) {
+                    sectionSchedules[sectionId] = {};
+                }
+                
+                sectionSchedules[sectionId].days = selectedDays;
+                
+                // Update the selected days display
+                const sectionItem = document.querySelector(`.section-schedule-item[data-section-id="${sectionId}"]`);
+                if (sectionItem) {
+                    const dayLabels = selectedDays.map(day => {
+                        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                        return dayNames[day];
+                    }).join(', ');
+                    
+                    const sectionDaysDiv = sectionItem.querySelector('.section-days');
+                    if (sectionDaysDiv) {
+                        sectionDaysDiv.textContent = selectedDays.length > 0 ? 'Days: ' + dayLabels : 'No days selected';
+                    }
                 }
             }
             
             // Update day checkboxes based on project schedule
             function updateDayCheckboxesForProject() {
                 // First clear all checkboxes
-                dayCheckboxes.forEach(checkbox => {
+                projectDayCheckboxes.forEach(checkbox => {
                     checkbox.checked = false;
                 });
                 
@@ -1248,6 +1357,7 @@
                             scheduleBySection.checked = true;
                             scheduleWholeProject.checked = false;
                             sectionScheduleContainer.classList.remove('d-none');
+                            wholeProjectDays.classList.add('d-none');
                             
                             // Load section schedules
                             if (data.sectionSchedules) {
@@ -1260,6 +1370,7 @@
                             scheduleWholeProject.checked = true;
                             scheduleBySection.checked = false;
                             sectionScheduleContainer.classList.add('d-none');
+                            wholeProjectDays.classList.remove('d-none');
                             
                             // Set whole project days
                             if (data.days && Array.isArray(data.days)) {
@@ -1803,15 +1914,8 @@
         // Function to save schedule
         async function saveSchedule() {
             const scheduleBySection = document.getElementById('schedule-by-section');
-            const dayCheckboxes = document.querySelectorAll('input[name="days"]');
+            const projectDayCheckboxes = document.querySelectorAll('.project-day');
             const daysError = document.getElementById('days-error');
-            
-            // Validate at least one day is selected
-            const anyDayChecked = Array.from(dayCheckboxes).some(cb => cb.checked);
-            if (!anyDayChecked) {
-                daysError.classList.add('show');
-                return;
-            }
             
             if (!currentProjectId) {
                 alert('No project selected');
@@ -1822,9 +1926,16 @@
                 const scheduleType = scheduleBySection.checked ? 'bySection' : 'wholeProject';
                 
                 if (scheduleType === 'wholeProject') {
+                    // Validate at least one day is selected
+                    const anyDayChecked = Array.from(projectDayCheckboxes).some(cb => cb.checked);
+                    if (!anyDayChecked) {
+                        daysError.classList.add('show');
+                        return;
+                    }
+                    
                     // Whole project scheduling
                     const selectedDays = [];
-                    dayCheckboxes.forEach(cb => {
+                    projectDayCheckboxes.forEach(cb => {
                         if (cb.checked) {
                             selectedDays.push(parseInt(cb.value));
                         }
@@ -1842,15 +1953,17 @@
                     // Section scheduling
                     // Validate that all sections have at least one day
                     let allSectionsValid = true;
+                    let emptySections = [];
                     
                     currentSections.forEach(section => {
                         if (!sectionSchedules[section.gid] || !sectionSchedules[section.gid].days || sectionSchedules[section.gid].days.length === 0) {
                             allSectionsValid = false;
+                            emptySections.push(section.name);
                         }
                     });
                     
                     if (!allSectionsValid) {
-                        alert('Please select at least one day for each section');
+                        alert(`Please select at least one day for each section. Missing days for: ${emptySections.join(', ')}`);
                         return;
                     }
                     
