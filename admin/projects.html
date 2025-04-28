@@ -512,6 +512,10 @@
             border-left-color: #20c997; /* Teal */
         }
         
+        #viewonly-projects {
+            border-left-color: #17a2b8; /* Cyan blue */
+        }
+        
         .project-items {
             display: flex;
             flex-direction: column;
@@ -634,6 +638,11 @@
                     <h4>One Off's</h4>
                     <div class="project-items"></div>
                 </div>
+                
+                <div class="project-category" id="viewonly-projects">
+                    <h4>View Only</h4>
+                    <div class="project-items"></div>
+                </div>
             </div>
             
             <div class="project-create-form">
@@ -648,6 +657,7 @@
                         <option value="todo">To Do's</option>
                         <option value="parcomp">Par Comp's</option>
                         <option value="oneoff">One Off's</option>
+                        <option value="viewonly">View Only</option>
                     </select>
                 </div>
                 <button id="createProject" class="button">Create Project in Asana</button>
@@ -841,6 +851,7 @@
             document.querySelector('#todo-projects .project-items').innerHTML = '';
             document.querySelector('#parcomp-projects .project-items').innerHTML = '';
             document.querySelector('#oneoff-projects .project-items').innerHTML = '';
+            document.querySelector('#viewonly-projects .project-items').innerHTML = '';
             
             // First fetch all project configurations for this location
             const projectConfigs = {};
@@ -861,7 +872,8 @@
             const categorizedProjects = {
                 todo: [],
                 parcomp: [],
-                oneoff: []
+                oneoff: [],
+                viewonly: []
             };
             
             projects.forEach(project => {
@@ -916,6 +928,7 @@
                                 <option value="todo" ${category === 'todo' ? 'selected' : ''}>To Do's</option>
                                 <option value="parcomp" ${category === 'parcomp' ? 'selected' : ''}>Par Comp's</option>
                                 <option value="oneoff" ${category === 'oneoff' ? 'selected' : ''}>One Off's</option>
+                                <option value="viewonly" ${category === 'viewonly' ? 'selected' : ''}>View Only</option>
                             </select>
                         </div>
                     `;
@@ -1092,6 +1105,7 @@
                     document.querySelector('#todo-projects .project-items').innerHTML = '<p>No projects found</p>';
                     document.querySelector('#parcomp-projects .project-items').innerHTML = '<p>No projects found</p>';
                     document.querySelector('#oneoff-projects .project-items').innerHTML = '<p>No projects found</p>';
+                    document.querySelector('#viewonly-projects .project-items').innerHTML = '<p>No projects found</p>';
                     return;
                 }
                 
