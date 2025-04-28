@@ -10,25 +10,26 @@
             font-family: Arial, sans-serif;
             max-width: 1000px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 10px;
             background-color: #FFD60A;
         }
         h1 {
             color: #87CEEB;
             text-align: center;
+            margin-bottom: 10px;
         }
         .container {
             background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            margin-top: 8px;
         }
         .project {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            margin-bottom: 5px;
+            padding: 8px;
+            border: 1px solid #eee;
+            border-radius: 4px;
         }
         .section {
             margin-left: 20px;
@@ -38,18 +39,15 @@
             border-radius: 5px;
         }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 3px;
+            font-size: 0.9rem;
         }
         input, select, textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 6px;
+            font-size: 0.9rem;
         }
         button, .button {
             background-color: #FF4040;
@@ -89,18 +87,12 @@
             border-radius: 5px;
         }
         .nav {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-            gap: 10px;
+            margin-bottom: 10px;
+            gap: 8px;
         }
         .nav-item {
-            padding: 10px 20px;
-            background-color: #87CEEB;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
+            padding: 8px 15px;
+            font-size: 0.9rem;
         }
         .nav-item.active {
             background-color: #FF4040;
@@ -486,18 +478,19 @@
         /* Project Category Styling */
         .project-category {
             background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-left: 5px solid #87CEEB;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #87CEEB;
         }
         
         .project-category h4 {
             color: #495057;
             margin-top: 0;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
+            margin-bottom: 5px;
+            padding-bottom: 5px;
             border-bottom: 1px solid #dee2e6;
+            font-size: 1rem;
         }
         
         #todo-projects {
@@ -519,14 +512,15 @@
         .project-items {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 6px;
         }
         
         .project {
             background-color: white;
-            border-radius: 5px;
-            padding: 15px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            padding: 10px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            margin-bottom: 6px;
             transition: transform 0.2s;
         }
         
@@ -535,196 +529,99 @@
             box-shadow: 0 3px 5px rgba(0,0,0,0.15);
         }
         
-        .project-category-select {
-            margin-left: 10px;
-            padding: 5px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
+        .project h4 {
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+        
+        .project p {
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+        }
+        
+        .category-description {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: -5px;
+            margin-bottom: 8px;
+        }
+        
+        .project-create-form {
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 15px;
+        }
+        
+        .project-create-form h3 {
+            margin-top: 0;
+            font-size: 1.1rem;
         }
         
         .actions {
             display: flex;
             align-items: center;
+            gap: 5px;
+            margin-top: 6px;
         }
         
-        /* Empty state styling */
+        .button, .btn {
+            padding: 6px 10px;
+            font-size: 0.85rem;
+        }
+        
+        .project-category-select {
+            margin-left: 5px;
+            padding: 3px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            max-width: 120px;
+        }
+        
         .project-items p {
             color: #6c757d;
             font-style: italic;
-            padding: 10px;
+            padding: 5px;
             text-align: center;
-        }
-        
-        /* Project create form */
-        .project-create-form {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-        
-        /* Status badges */
-        .success {
-            color: #28a745;
-        }
-        
-        .error {
-            color: #dc3545;
-        }
-        
-        /* Make the form more attractive */
-        #projectsContainer > h3 {
-            margin-top: 30px;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .actions {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-            
-            .project-category-select {
-                margin-left: 0;
-                width: 100%;
-            }
-        }
-        
-        /* New styles */
-        #uncategorized-projects {
-            border-left-color: #6c757d; /* Gray */
-        }
-        
-        /* CSS styles for category descriptions */
-        .category-description {
             font-size: 0.85rem;
-            color: #6c757d;
-            margin-top: -10px;
-            margin-bottom: 15px;
         }
         
-        /* CSS for the day selections */
-        .day-checkboxes {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 10px;
+        #projectStatus {
+            margin-top: 10px;
+            font-size: 0.9rem;
         }
         
-        .form-check-inline {
-            display: inline-flex;
-            align-items: center;
-            padding-left: 0;
-            margin-right: 0.75rem;
+        /* Add utility classes for flex layout */
+        .d-flex {
+            display: flex !important;
         }
         
-        .form-check-input {
-            margin-right: 5px;
+        .justify-content-between {
+            justify-content: space-between !important;
         }
         
-        /* Section selection styling */
-        #section-schedule-list {
+        .align-items-center {
+            align-items: center !important;
+        }
+        
+        /* Make existing elements more compact */
+        button#fetchProjects {
+            padding: 5px 10px;
+            font-size: 0.85rem;
+        }
+        
+        /* Project category containers - Grid layout */
+        #projectList {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 10px;
             margin-top: 10px;
         }
         
-        .section-schedule-item {
-            padding: 10px;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            margin-bottom: 8px;
-            cursor: pointer;
-        }
-        
-        .section-schedule-item.active {
-            background-color: #e9ecef;
-            border-color: #87CEEB;
-        }
-        
-        .section-days {
-            margin-top: 8px;
-            font-size: 0.85rem;
-            color: #6c757d;
-        }
-        
-        .d-none {
-            display: none !important;
-        }
-        
-        .invalid-feedback {
-            display: none;
-            width: 100%;
-            margin-top: 0.25rem;
-            font-size: 0.875em;
-            color: #dc3545;
-        }
-        
-        .invalid-feedback.show {
-            display: block;
-        }
-        
-        /* Modal Overlay Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .modal-container {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 20px;
-            position: relative;
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #dee2e6;
-        }
-        
-        .modal-header h2 {
-            margin: 0;
-            color: #495057;
-        }
-        
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #6c757d;
-        }
-        
-        .modal-close:hover {
-            color: #343a40;
-        }
-        
-        .modal-body {
-            margin-bottom: 20px;
-        }
-        
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            padding-top: 15px;
-            border-top: 1px solid #dee2e6;
-            gap: 10px;
+        /* Make headers smaller */
+        #projectsContainer > h3 {
+            font-size: 1.1rem;
+            margin: 12px 0 8px 0;
         }
     </style>
 </head>
@@ -737,26 +634,27 @@
     </div>
     
     <div class="container">
-        <h2>Manage Asana Projects</h2>
-        <p>Create and configure Asana projects to connect with the app. Projects need to have specific sections to organize tasks properly.</p>
+        <h2>Asana Projects</h2>
+        <p>Connect projects with the app and organize them by category.</p>
         
         <div class="form-group">
-            <label for="locationSelect">Select Location:</label>
+            <label for="locationSelect">Location:</label>
             <select id="locationSelect">
                 <option value="">Loading locations...</option>
             </select>
         </div>
         
         <div id="locationInfo" class="hidden">
-            <h3>Location Details</h3>
-            <p><strong>Selected Location:</strong> <span id="selectedLocationName"></span></p>
-            <p><strong>Asana User ID:</strong> <span id="asanaUserId"></span></p>
-            <p><strong>Asana PAT:</strong> <span id="asanaPAT"></span></p>
+            <div><strong>Selected:</strong> <span id="selectedLocationName"></span></div>
+            <div><strong>Asana ID:</strong> <span id="asanaUserId"></span></div>
+            <div><strong>PAT:</strong> <span id="asanaPAT"></span></div>
         </div>
         
         <div id="projectsContainer" class="hidden">
-            <h3>Asana Projects</h3>
-            <button id="fetchProjects" class="button secondary">Fetch Projects from Asana</button>
+            <div class="d-flex justify-content-between align-items-center">
+                <h3>Asana Projects</h3>
+                <button id="fetchProjects" class="button secondary">Refresh Projects</button>
+            </div>
             <div id="projectStatus"></div>
             
             <div id="projectList">
@@ -1440,11 +1338,15 @@
                     
                     if (config) {
                         if (config.frequency) {
-                            scheduleInfo = `Scheduled ${config.frequency} at ${config.time}`;
+                            scheduleInfo = `${config.frequency}`;
                             if (config.day && config.frequency !== 'daily') {
-                                const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                                const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
                                 scheduleInfo += ` on ${dayNames[config.day]}`;
                             }
+                            scheduleClass = 'success';
+                        } else if (config.days && config.days.length > 0) {
+                            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                            scheduleInfo = `Days: ${config.days.map(d => dayNames[d]).join(', ')}`;
                             scheduleClass = 'success';
                         }
                     }
@@ -1453,11 +1355,10 @@
                     projectDiv.className = 'project';
                     projectDiv.innerHTML = `
                         <h4>${project.name}</h4>
-                        <p><strong>Project ID:</strong> ${project.gid}</p>
-                        <p class="${scheduleClass}"><strong>Schedule:</strong> ${scheduleInfo}</p>
+                        <p class="${scheduleClass}"><small>${scheduleInfo}</small></p>
                         <div class="actions">
                             <button class="button view-project" data-id="${project.gid}" data-name="${project.name}">
-                                View Details & Configure
+                                Configure
                             </button>
                             <select class="project-category-select" data-project-id="${project.gid}" data-original-value="${category}">
                                 <option value="">Uncategorized</option>
