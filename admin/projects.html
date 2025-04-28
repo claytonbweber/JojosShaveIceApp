@@ -901,7 +901,7 @@
                     </div>
                     
                     <!-- Tasks Container -->
-                    <div id="task-container">
+                    <div id="modal-task-container">
                         <h3>Select a section to view tasks</h3>
                     </div>
                 </div>
@@ -924,7 +924,7 @@
                                 <h5>Project Sections</h5>
                             </div>
                             <div class="card-body">
-                                <div id="sections-list"></div>
+                                <div id="modal-sections-list"></div>
                             </div>
                         </div>
                     </div>
@@ -998,7 +998,7 @@
                         </div>
                         
                         <!-- Tasks Container -->
-                        <div id="task-container">
+                        <div id="modal-task-container">
                             <h3>Select a section to view tasks</h3>
                         </div>
                     </div>
@@ -1138,7 +1138,7 @@
                 });
             });
             
-            // Function to populate the section list
+            // Function to populate the section list from the currentSections
             function populateSectionList() {
                 sectionScheduleList.innerHTML = '';
                 
@@ -1285,7 +1285,7 @@
             saveScheduleBtn.addEventListener('click', saveSchedule);
             
             // Add event listener for section selection
-            document.getElementById('sections-list').addEventListener('click', async (e) => {
+            document.getElementById('modal-sections-list').addEventListener('click', async (e) => {
                 const sectionItem = e.target.closest('.project-section-item');
                 if (sectionItem) {
                     // Remove active class from all sections
@@ -1695,8 +1695,8 @@
             // Update modal title
             document.getElementById('modal-project-name').textContent = projectName;
             
-            // Initialize project details if not already done
-            initProjectDetails();
+            // Open the modal
+            openModal();
             
             // Fetch sections for this project
             try {
@@ -1715,14 +1715,14 @@
                 const sectionsData = await sectionsResponse.json();
                 currentSections = sectionsData.data;
                 
-                // Display sections
-                showProjectSections(currentSections);
+                // Display sections in the modal
+                showProjectSectionsInModal(currentSections);
                 
-                // Open the modal
-                openModal();
+                // Initialize project details
+                initProjectDetails();
             } catch (error) {
                 console.error('Error fetching sections:', error);
-                document.getElementById('sections-list').innerHTML = `
+                document.getElementById('modal-sections-list').innerHTML = `
                     <div class="alert alert-danger">
                         Error loading sections: ${error.message}
                     </div>
@@ -1730,9 +1730,9 @@
             }
         }
         
-        // Show project sections with task support
-        function showProjectSections(sections) {
-            const sectionsContainer = document.getElementById('sections-list');
+        // Show project sections in the modal
+        function showProjectSectionsInModal(sections) {
+            const sectionsContainer = document.getElementById('modal-sections-list');
             let html = '';
             
             if (sections.length === 0) {
@@ -1837,7 +1837,7 @@
         // Function to fetch and display tasks for a section
         async function fetchTasks(sectionId, sectionName) {
             try {
-                const taskContainer = document.getElementById('task-container');
+                const taskContainer = document.getElementById('modal-task-container');
                 taskContainer.innerHTML = '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
                 
                 // Use the Asana API directly since we already have the PAT
@@ -1879,7 +1879,7 @@
                 
             } catch (error) {
                 console.error('Error fetching tasks:', error);
-                document.getElementById('task-container').innerHTML = `
+                document.getElementById('modal-task-container').innerHTML = `
                     <div class="alert alert-danger">
                         Failed to load tasks. Please try again.
                     </div>
@@ -1889,7 +1889,7 @@
         
         // Display tasks in the DOM
         function displayTasks(tasks, sectionName, sectionId) {
-            const taskContainer = document.getElementById('task-container');
+            const taskContainer = document.getElementById('modal-task-container');
             
             // Sort tasks: completed last, then by due date
             tasks.sort((a, b) => {
