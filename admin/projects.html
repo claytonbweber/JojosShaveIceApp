@@ -951,7 +951,7 @@
                             <button class="button view-project" data-id="${project.gid}" data-name="${project.name}">
                                 View Details & Configure
                             </button>
-                            <select class="project-category-select" data-project-id="${project.gid}">
+                            <select class="project-category-select" data-project-id="${project.gid}" data-original-value="${category}">
                                 <option value="">Uncategorized</option>
                                 <option value="todo" ${category === 'todo' ? 'selected' : ''}>To Do's</option>
                                 <option value="parcomp" ${category === 'parcomp' ? 'selected' : ''}>Par Comp's</option>
@@ -978,8 +978,12 @@
                 select.addEventListener('change', async function() {
                     const projectId = this.dataset.projectId;
                     const newCategory = this.value;
+                    const originalSelect = this;
+                    const originalValue = select.getAttribute('data-original-value');
                     
                     try {
+                        projectStatus.innerHTML = '<p>Updating project category...</p>';
+                        
                         // Update category in Firestore
                         await db.collection('projectConfigurations').doc(projectId).set({
                             category: newCategory,
@@ -988,11 +992,27 @@
                             updatedAt: new Date().toISOString()
                         }, { merge: true });
                         
+                        // Save current value as original
+                        originalSelect.setAttribute('data-original-value', newCategory);
+                        
                         // Refresh projects display
+                        projectStatus.innerHTML = '<p class="success">Project category updated successfully!</p>';
                         await fetchProjects();
                     } catch (error) {
                         console.error('Error updating project category:', error);
-                        alert('Failed to update project category: ' + error.message);
+                        projectStatus.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+                        
+                        // Reset to original value
+                        if (originalValue) {
+                            originalSelect.value = originalValue;
+                        }
+                        
+                        // Show more detailed error and how to fix it
+                        if (error.code === 'permission-denied') {
+                            alert('Permission denied error: The security rules need to be updated to allow access to the projectConfigurations collection. Please check the console for details.');
+                        } else {
+                            alert(`Failed to update project category: ${error.message}. Please make sure you have the appropriate permissions.`);
+                        }
                     }
                 });
             });

@@ -8,6 +8,11 @@ service cloud.firestore {
       allow read, write;
     }
     
+    // Allow public read/write access to projectConfigurations
+    match /projectConfigurations/{projectId} {
+      allow read, write;
+    }
+    
     // Default rule - deny all other access
     match /{document=**} {
       allow read, write: if false;
