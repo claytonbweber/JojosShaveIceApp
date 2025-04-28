@@ -662,6 +662,70 @@
         .invalid-feedback.show {
             display: block;
         }
+        
+        /* Modal Overlay Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            color: #495057;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+        }
+        
+        .modal-close:hover {
+            color: #343a40;
+        }
+        
+        .modal-body {
+            margin-bottom: 20px;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 15px;
+            border-top: 1px solid #dee2e6;
+            gap: 10px;
+        }
     </style>
 </head>
 <body>
@@ -832,10 +896,6 @@
                                         Please select at least one day
                                     </div>
                                 </div>
-
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary">Save Schedule</button>
-                                </div>
                             </form>
                         </div>
                     </div>
@@ -845,6 +905,108 @@
                         <h3>Select a section to view tasks</h3>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Project Modal Overlay -->
+    <div id="project-config-modal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 id="modal-project-name">Configure Project</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Project Sections</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="sections-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-8">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5>Schedule Configuration</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="schedule-form">
+                                    <div class="mb-3">
+                                        <label class="form-label">Schedule Type</label>
+                                        <div class="form-check">
+                                            <input type="radio" id="schedule-by-section" name="scheduleType" value="bySection" class="form-check-input">
+                                            <label for="schedule-by-section" class="form-check-label">By Section</label>
+                                            <small class="form-text text-muted d-block">Configure each section separately with its own schedule</small>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="radio" id="schedule-whole-project" name="scheduleType" value="wholeProject" class="form-check-input" checked>
+                                            <label for="schedule-whole-project" class="form-check-label">Whole Project</label>
+                                            <small class="form-text text-muted d-block">Apply the same schedule to the entire project</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="section-schedule-container" class="mb-3 d-none">
+                                        <label class="form-label">Select a section to schedule</label>
+                                        <div id="section-schedule-list">
+                                            <!-- Section list will be populated here -->
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="days-selection" class="mb-3">
+                                        <label class="form-label">Select Days</label>
+                                        <div class="day-checkboxes">
+                                            <div class="form-check form-check-inline">
+                                                <input type="checkbox" id="day-0" name="days" value="0" class="form-check-input">
+                                                <label for="day-0" class="form-check-label">Sun</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="checkbox" id="day-1" name="days" value="1" class="form-check-input">
+                                                <label for="day-1" class="form-check-label">Mon</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="checkbox" id="day-2" name="days" value="2" class="form-check-input">
+                                                <label for="day-2" class="form-check-label">Tue</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="checkbox" id="day-3" name="days" value="3" class="form-check-input">
+                                                <label for="day-3" class="form-check-label">Wed</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="checkbox" id="day-4" name="days" value="4" class="form-check-input">
+                                                <label for="day-4" class="form-check-label">Thu</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="checkbox" id="day-5" name="days" value="5" class="form-check-input">
+                                                <label for="day-5" class="form-check-label">Fri</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="checkbox" id="day-6" name="days" value="6" class="form-check-input">
+                                                <label for="day-6" class="form-check-label">Sat</label>
+                                            </div>
+                                        </div>
+                                        <div id="days-error" class="invalid-feedback">
+                                            Please select at least one day
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <!-- Tasks Container -->
+                        <div id="task-container">
+                            <h3>Select a section to view tasks</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-schedule" class="btn btn-secondary">Cancel</button>
+                <button id="save-schedule" class="btn btn-primary">Save Schedule</button>
             </div>
         </div>
     </div>
@@ -897,9 +1059,262 @@
         const scheduleBySection = document.getElementById('schedule-by-section');
         const scheduleByDay = document.getElementById('scheduleByDay');
         const daySelectionSection = document.getElementById('daySelectionSection');
-        const saveScheduleBtn = document.getElementById('saveSchedule');
+        const saveScheduleBtn = document.getElementById('save-schedule');
         const scheduleStatus = document.getElementById('scheduleStatus');
         const dayCheckboxes = document.querySelectorAll('input[name="day"]');
+        
+        // Global variable for section schedules
+        let sectionSchedules = {};
+        
+        // Load schedule configuration form
+        function loadScheduleForm() {
+            const scheduleBySection = document.getElementById('schedule-by-section');
+            const scheduleWholeProject = document.getElementById('schedule-whole-project');
+            const sectionScheduleContainer = document.getElementById('section-schedule-container');
+            const sectionScheduleList = document.getElementById('section-schedule-list');
+            const dayCheckboxes = document.querySelectorAll('input[name="days"]');
+            const daysError = document.getElementById('days-error');
+            
+            let activeSectionId = null;
+            
+            // Toggle between section and whole project scheduling
+            scheduleBySection.addEventListener('change', () => {
+                if (scheduleBySection.checked) {
+                    sectionScheduleContainer.classList.remove('d-none');
+                    // Populate sections if they're not already
+                    if (sectionScheduleList.children.length === 0 && currentSections.length > 0) {
+                        populateSectionList();
+                    }
+                }
+            });
+            
+            scheduleWholeProject.addEventListener('change', () => {
+                if (scheduleWholeProject.checked) {
+                    sectionScheduleContainer.classList.add('d-none');
+                    activeSectionId = null;
+                    // Reset all day checkboxes to match project settings when switching back
+                    updateDayCheckboxesForProject();
+                }
+            });
+            
+            // Day selection change handler
+            dayCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    // Remove error message if at least one day is selected
+                    const anyChecked = Array.from(dayCheckboxes).some(cb => cb.checked);
+                    if (anyChecked) {
+                        daysError.classList.remove('show');
+                    }
+                    
+                    // Update section schedule if in section mode
+                    if (scheduleBySection.checked && activeSectionId) {
+                        const selectedDays = [];
+                        dayCheckboxes.forEach(cb => {
+                            if (cb.checked) {
+                                selectedDays.push(parseInt(cb.value));
+                            }
+                        });
+                        
+                        if (!sectionSchedules[activeSectionId]) {
+                            sectionSchedules[activeSectionId] = {};
+                        }
+                        
+                        sectionSchedules[activeSectionId].days = selectedDays;
+                        
+                        // Update section item display
+                        const sectionItem = document.querySelector(`.section-schedule-item[data-section-id="${activeSectionId}"]`);
+                        if (sectionItem) {
+                            const dayLabels = selectedDays.map(day => {
+                                const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                                return dayNames[day];
+                            }).join(', ');
+                            
+                            const sectionDaysDiv = sectionItem.querySelector('.section-days');
+                            if (sectionDaysDiv) {
+                                sectionDaysDiv.textContent = selectedDays.length > 0 ? 'Days: ' + dayLabels : 'No days selected';
+                            }
+                        }
+                    }
+                });
+            });
+            
+            // Function to populate the section list
+            function populateSectionList() {
+                sectionScheduleList.innerHTML = '';
+                
+                if (currentSections.length === 0) {
+                    sectionScheduleList.innerHTML = '<p>No sections available in this project.</p>';
+                    return;
+                }
+                
+                currentSections.forEach(section => {
+                    const sectionItem = document.createElement('div');
+                    sectionItem.className = 'section-schedule-item';
+                    sectionItem.dataset.sectionId = section.gid;
+                    
+                    // Check if we have schedule data for this section
+                    if (!sectionSchedules[section.gid]) {
+                        sectionSchedules[section.gid] = {
+                            days: []
+                        };
+                    }
+                    
+                    const selectedDays = sectionSchedules[section.gid].days || [];
+                    const dayLabels = selectedDays.map(day => {
+                        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                        return dayNames[day];
+                    }).join(', ');
+                    
+                    sectionItem.innerHTML = `
+                        <div><strong>${section.name}</strong></div>
+                        <div class="section-days">${selectedDays.length > 0 ? 'Days: ' + dayLabels : 'No days selected'}</div>
+                    `;
+                    
+                    sectionItem.addEventListener('click', () => {
+                        // Remove active class from all sections
+                        document.querySelectorAll('.section-schedule-item').forEach(el => {
+                            el.classList.remove('active');
+                        });
+                        
+                        // Add active class to selected section
+                        sectionItem.classList.add('active');
+                        
+                        // Set active section and update day checkboxes
+                        activeSectionId = section.gid;
+                        updateDayCheckboxesForSection(section.gid);
+                    });
+                    
+                    sectionScheduleList.appendChild(sectionItem);
+                });
+            }
+            
+            // Update day checkboxes based on section schedule
+            function updateDayCheckboxesForSection(sectionId) {
+                // First clear all checkboxes
+                dayCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                // Then check the appropriate days
+                if (sectionSchedules[sectionId] && sectionSchedules[sectionId].days) {
+                    const selectedDays = sectionSchedules[sectionId].days;
+                    selectedDays.forEach(day => {
+                        const checkbox = document.getElementById(`day-${day}`);
+                        if (checkbox) {
+                            checkbox.checked = true;
+                        }
+                    });
+                }
+            }
+            
+            // Update day checkboxes based on project schedule
+            function updateDayCheckboxesForProject() {
+                // First clear all checkboxes
+                dayCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                // Then load from project configuration if available
+                loadProjectSchedule();
+            }
+            
+            // Load project schedule from Firestore
+            async function loadProjectSchedule() {
+                if (!currentProjectId) return;
+                
+                try {
+                    const docRef = db.collection('projectConfigurations').doc(currentProjectId);
+                    const doc = await docRef.get();
+                    
+                    if (doc.exists) {
+                        const data = doc.data();
+                        
+                        // Set schedule type
+                        if (data.scheduleType === 'bySection') {
+                            scheduleBySection.checked = true;
+                            scheduleWholeProject.checked = false;
+                            sectionScheduleContainer.classList.remove('d-none');
+                            
+                            // Load section schedules
+                            if (data.sectionSchedules) {
+                                sectionSchedules = data.sectionSchedules;
+                            }
+                            
+                            // Populate section list
+                            populateSectionList();
+                        } else {
+                            scheduleWholeProject.checked = true;
+                            scheduleBySection.checked = false;
+                            sectionScheduleContainer.classList.add('d-none');
+                            
+                            // Set whole project days
+                            if (data.days && Array.isArray(data.days)) {
+                                data.days.forEach(day => {
+                                    const checkbox = document.getElementById(`day-${day}`);
+                                    if (checkbox) {
+                                        checkbox.checked = true;
+                                    }
+                                });
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error loading project schedule:', error);
+                }
+            }
+            
+            // Expose these functions so they can be used by the modal
+            return {
+                populateSectionList,
+                loadProjectSchedule,
+                updateDayCheckboxesForProject
+            };
+        }
+        
+        // Initialize the project details view
+        function initProjectDetails() {
+            const modalCloseBtn = document.querySelector('.modal-close');
+            const cancelScheduleBtn = document.getElementById('cancel-schedule');
+            const saveScheduleBtn = document.getElementById('save-schedule');
+            
+            // Set up close and cancel buttons
+            modalCloseBtn.addEventListener('click', closeModal);
+            cancelScheduleBtn.addEventListener('click', closeModal);
+            
+            // Set up save button
+            saveScheduleBtn.addEventListener('click', saveSchedule);
+            
+            // Add event listener for section selection
+            document.getElementById('sections-list').addEventListener('click', async (e) => {
+                const sectionItem = e.target.closest('.project-section-item');
+                if (sectionItem) {
+                    // Remove active class from all sections
+                    document.querySelectorAll('.project-section-item').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    
+                    // Add active class to selected section
+                    sectionItem.classList.add('active');
+                    
+                    // Fetch tasks for the selected section
+                    const sectionId = sectionItem.dataset.sectionId;
+                    const sectionName = sectionItem.dataset.sectionName;
+                    await fetchTasks(sectionId, sectionName);
+                }
+            });
+            
+            // Initialize the schedule form
+            const { loadProjectSchedule } = scheduleHelpers;
+            
+            // Load the current schedule
+            loadProjectSchedule();
+        }
+        
+        // When the DOM is loaded, initialize the schedule helpers
+        let scheduleHelpers;
+        document.addEventListener('DOMContentLoaded', function() {
+            scheduleHelpers = loadScheduleForm();
+        });
         
         // Load locations from Firestore
         async function loadLocations() {
@@ -1269,39 +1684,7 @@
             }
         }
         
-        // Initialize the project details view
-        function initProjectDetails() {
-            const projectDetailDiv = document.getElementById('project-details');
-            const projectNameElement = document.getElementById('project-name');
-            const backToProjectsBtn = document.getElementById('back-to-projects');
-            
-            // Set up back button
-            backToProjectsBtn.addEventListener('click', () => {
-                projectDetailDiv.classList.add('d-none');
-                projectsContainer.classList.remove('hidden');
-            });
-            
-            // Add event listener for section selection
-            document.getElementById('sections-list').addEventListener('click', async (e) => {
-                const sectionItem = e.target.closest('.project-section-item');
-                if (sectionItem) {
-                    // Remove active class from all sections
-                    document.querySelectorAll('.project-section-item').forEach(el => {
-                        el.classList.remove('active');
-                    });
-                    
-                    // Add active class to selected section
-                    sectionItem.classList.add('active');
-                    
-                    // Fetch tasks for the selected section
-                    const sectionId = sectionItem.dataset.sectionId;
-                    const sectionName = sectionItem.dataset.sectionName;
-                    await fetchTasks(sectionId, sectionName);
-                }
-            });
-        }
-        
-        // Show project details and sections
+        // Update the view project function to open the modal instead of changing the page
         async function viewProject(projectId, projectName) {
             if (!selectedLocation || !selectedLocation.asanaPAT) {
                 return;
@@ -1309,13 +1692,8 @@
             
             currentProjectId = projectId;
             
-            // Update UI for project details view
-            const projectDetailDiv = document.getElementById('project-details');
-            const projectNameElement = document.getElementById('project-name');
-            
-            projectNameElement.textContent = projectName;
-            projectsContainer.classList.add('hidden');
-            projectDetailDiv.classList.remove('d-none');
+            // Update modal title
+            document.getElementById('modal-project-name').textContent = projectName;
             
             // Initialize project details if not already done
             initProjectDetails();
@@ -1339,6 +1717,9 @@
                 
                 // Display sections
                 showProjectSections(currentSections);
+                
+                // Open the modal
+                openModal();
             } catch (error) {
                 console.error('Error fetching sections:', error);
                 document.getElementById('sections-list').innerHTML = `
@@ -1369,270 +1750,88 @@
             sectionsContainer.innerHTML = html;
         }
         
-        // Load schedule configuration form
-        function loadScheduleForm() {
-            const scheduleForm = document.getElementById('schedule-form');
+        // Function to open modal
+        function openModal() {
+            const modal = document.getElementById('project-config-modal');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling of background
+        }
+        
+        // Function to close modal
+        function closeModal() {
+            const modal = document.getElementById('project-config-modal');
+            modal.style.display = 'none';
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+        
+        // Function to save schedule
+        async function saveSchedule() {
             const scheduleBySection = document.getElementById('schedule-by-section');
-            const scheduleWholeProject = document.getElementById('schedule-whole-project');
-            const sectionScheduleContainer = document.getElementById('section-schedule-container');
-            const sectionScheduleList = document.getElementById('section-schedule-list');
-            const daysSelection = document.getElementById('days-selection');
             const dayCheckboxes = document.querySelectorAll('input[name="days"]');
             const daysError = document.getElementById('days-error');
             
-            let activeSectionId = null;
-            let sectionSchedules = {};
-            
-            // Toggle between section and whole project scheduling
-            scheduleBySection.addEventListener('change', () => {
-                if (scheduleBySection.checked) {
-                    sectionScheduleContainer.classList.remove('d-none');
-                    // Populate sections if they're not already
-                    if (sectionScheduleList.children.length === 0 && currentSections.length > 0) {
-                        populateSectionList();
-                    }
-                }
-            });
-            
-            scheduleWholeProject.addEventListener('change', () => {
-                if (scheduleWholeProject.checked) {
-                    sectionScheduleContainer.classList.add('d-none');
-                    activeSectionId = null;
-                    // Reset all day checkboxes to match project settings when switching back
-                    updateDayCheckboxesForProject();
-                }
-            });
-            
-            // Function to populate the section list
-            function populateSectionList() {
-                sectionScheduleList.innerHTML = '';
-                
-                if (currentSections.length === 0) {
-                    sectionScheduleList.innerHTML = '<p>No sections available in this project.</p>';
-                    return;
-                }
-                
-                currentSections.forEach(section => {
-                    const sectionItem = document.createElement('div');
-                    sectionItem.className = 'section-schedule-item';
-                    sectionItem.dataset.sectionId = section.gid;
-                    
-                    // Check if we have schedule data for this section
-                    if (!sectionSchedules[section.gid]) {
-                        sectionSchedules[section.gid] = {
-                            days: []
-                        };
-                    }
-                    
-                    const selectedDays = sectionSchedules[section.gid].days;
-                    const dayLabels = selectedDays.map(day => {
-                        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-                        return dayNames[day];
-                    }).join(', ');
-                    
-                    sectionItem.innerHTML = `
-                        <div><strong>${section.name}</strong></div>
-                        <div class="section-days">${selectedDays.length > 0 ? 'Days: ' + dayLabels : 'No days selected'}</div>
-                    `;
-                    
-                    sectionItem.addEventListener('click', () => {
-                        // Remove active class from all sections
-                        document.querySelectorAll('.section-schedule-item').forEach(el => {
-                            el.classList.remove('active');
-                        });
-                        
-                        // Add active class to selected section
-                        sectionItem.classList.add('active');
-                        
-                        // Set active section and update day checkboxes
-                        activeSectionId = section.gid;
-                        updateDayCheckboxesForSection(section.gid);
-                    });
-                    
-                    sectionScheduleList.appendChild(sectionItem);
-                });
+            // Validate at least one day is selected
+            const anyDayChecked = Array.from(dayCheckboxes).some(cb => cb.checked);
+            if (!anyDayChecked) {
+                daysError.classList.add('show');
+                return;
             }
             
-            // Update day checkboxes based on section schedule
-            function updateDayCheckboxesForSection(sectionId) {
-                // First clear all checkboxes
-                dayCheckboxes.forEach(checkbox => {
-                    checkbox.checked = false;
-                });
+            if (!currentProjectId) {
+                alert('No project selected');
+                return;
+            }
+            
+            try {
+                const scheduleType = scheduleBySection.checked ? 'bySection' : 'wholeProject';
                 
-                // Then check the appropriate days
-                if (sectionSchedules[sectionId] && sectionSchedules[sectionId].days) {
-                    const selectedDays = sectionSchedules[sectionId].days;
-                    selectedDays.forEach(day => {
-                        const checkbox = document.getElementById(`day-${day}`);
-                        if (checkbox) {
-                            checkbox.checked = true;
+                if (scheduleType === 'wholeProject') {
+                    // Whole project scheduling
+                    const selectedDays = [];
+                    dayCheckboxes.forEach(cb => {
+                        if (cb.checked) {
+                            selectedDays.push(parseInt(cb.value));
                         }
                     });
-                }
-            }
-            
-            // Update day checkboxes based on project schedule
-            function updateDayCheckboxesForProject() {
-                // First clear all checkboxes
-                dayCheckboxes.forEach(checkbox => {
-                    checkbox.checked = false;
-                });
-                
-                // Then load from project configuration if available
-                loadProjectSchedule();
-            }
-            
-            // Day selection change handler
-            dayCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', () => {
-                    // Remove error message if at least one day is selected
-                    const anyChecked = Array.from(dayCheckboxes).some(cb => cb.checked);
-                    if (anyChecked) {
-                        daysError.classList.remove('show');
+                    
+                    await db.collection('projectConfigurations').doc(currentProjectId).set({
+                        scheduleType,
+                        days: selectedDays,
+                        updatedAt: new Date().toISOString()
+                    }, { merge: true });
+                    
+                    alert('Project schedule saved successfully');
+                    closeModal();
+                } else {
+                    // Section scheduling
+                    // Validate that all sections have at least one day
+                    let allSectionsValid = true;
+                    
+                    currentSections.forEach(section => {
+                        if (!sectionSchedules[section.gid] || !sectionSchedules[section.gid].days || sectionSchedules[section.gid].days.length === 0) {
+                            allSectionsValid = false;
+                        }
+                    });
+                    
+                    if (!allSectionsValid) {
+                        alert('Please select at least one day for each section');
+                        return;
                     }
                     
-                    // Update section schedule if in section mode
-                    if (scheduleBySection.checked && activeSectionId) {
-                        const selectedDays = [];
-                        dayCheckboxes.forEach(cb => {
-                            if (cb.checked) {
-                                selectedDays.push(parseInt(cb.value));
-                            }
-                        });
-                        
-                        sectionSchedules[activeSectionId].days = selectedDays;
-                        
-                        // Update section item display
-                        const sectionItem = document.querySelector(`.section-schedule-item[data-section-id="${activeSectionId}"]`);
-                        if (sectionItem) {
-                            const dayLabels = selectedDays.map(day => {
-                                const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-                                return dayNames[day];
-                            }).join(', ');
-                            
-                            const sectionDaysDiv = sectionItem.querySelector('.section-days');
-                            if (sectionDaysDiv) {
-                                sectionDaysDiv.textContent = selectedDays.length > 0 ? 'Days: ' + dayLabels : 'No days selected';
-                            }
-                        }
-                    }
-                });
-            });
-            
-            // Form submission handler
-            scheduleForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                
-                // Validate at least one day is selected
-                const anyDayChecked = Array.from(dayCheckboxes).some(cb => cb.checked);
-                if (!anyDayChecked) {
-                    daysError.classList.add('show');
-                    return;
-                }
-                
-                if (!currentProjectId) {
-                    alert('No project selected');
-                    return;
-                }
-                
-                try {
-                    const scheduleType = scheduleBySection.checked ? 'bySection' : 'wholeProject';
+                    // Save project config with section schedules
+                    await db.collection('projectConfigurations').doc(currentProjectId).set({
+                        scheduleType,
+                        sectionSchedules,
+                        updatedAt: new Date().toISOString()
+                    }, { merge: true });
                     
-                    if (scheduleType === 'wholeProject') {
-                        // Whole project scheduling
-                        const selectedDays = [];
-                        dayCheckboxes.forEach(cb => {
-                            if (cb.checked) {
-                                selectedDays.push(parseInt(cb.value));
-                            }
-                        });
-                        
-                        await db.collection('projectConfigurations').doc(currentProjectId).set({
-                            scheduleType,
-                            days: selectedDays,
-                            updatedAt: new Date().toISOString()
-                        }, { merge: true });
-                        
-                        alert('Project schedule saved successfully');
-                    } else {
-                        // Section scheduling
-                        // Validate that all sections have at least one day
-                        let allSectionsValid = true;
-                        
-                        currentSections.forEach(section => {
-                            if (!sectionSchedules[section.gid] || !sectionSchedules[section.gid].days || sectionSchedules[section.gid].days.length === 0) {
-                                allSectionsValid = false;
-                            }
-                        });
-                        
-                        if (!allSectionsValid) {
-                            alert('Please select at least one day for each section');
-                            return;
-                        }
-                        
-                        // Save project config with section schedules
-                        await db.collection('projectConfigurations').doc(currentProjectId).set({
-                            scheduleType,
-                            sectionSchedules,
-                            updatedAt: new Date().toISOString()
-                        }, { merge: true });
-                        
-                        alert('Section schedules saved successfully');
-                    }
-                } catch (error) {
-                    console.error('Error saving schedule:', error);
-                    alert(`Error saving schedule: ${error.message}`);
+                    alert('Section schedules saved successfully');
+                    closeModal();
                 }
-            });
-            
-            // Load project schedule from Firestore
-            async function loadProjectSchedule() {
-                if (!currentProjectId) return;
-                
-                try {
-                    const docRef = db.collection('projectConfigurations').doc(currentProjectId);
-                    const doc = await docRef.get();
-                    
-                    if (doc.exists) {
-                        const data = doc.data();
-                        
-                        // Set schedule type
-                        if (data.scheduleType === 'bySection') {
-                            scheduleBySection.checked = true;
-                            scheduleWholeProject.checked = false;
-                            sectionScheduleContainer.classList.remove('d-none');
-                            
-                            // Load section schedules
-                            if (data.sectionSchedules) {
-                                sectionSchedules = data.sectionSchedules;
-                            }
-                            
-                            // Populate section list
-                            populateSectionList();
-                        } else {
-                            scheduleWholeProject.checked = true;
-                            scheduleBySection.checked = false;
-                            sectionScheduleContainer.classList.add('d-none');
-                            
-                            // Set whole project days
-                            if (data.days && Array.isArray(data.days)) {
-                                data.days.forEach(day => {
-                                    const checkbox = document.getElementById(`day-${day}`);
-                                    if (checkbox) {
-                                        checkbox.checked = true;
-                                    }
-                                });
-                            }
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error loading project schedule:', error);
-                }
+            } catch (error) {
+                console.error('Error saving schedule:', error);
+                alert(`Error saving schedule: ${error.message}`);
             }
-            
-            // Load schedule when form is initialized
-            loadProjectSchedule();
         }
         
         // Function to fetch and display tasks for a section
