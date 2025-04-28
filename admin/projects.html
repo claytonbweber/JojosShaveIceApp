@@ -590,6 +590,19 @@
                 width: 100%;
             }
         }
+        
+        /* New styles */
+        #uncategorized-projects {
+            border-left-color: #6c757d; /* Gray */
+        }
+        
+        /* CSS styles for category descriptions */
+        .category-description {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: -10px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -624,23 +637,33 @@
             <div id="projectStatus"></div>
             
             <div id="projectList">
+                <div class="project-category" id="uncategorized-projects">
+                    <h4>Uncategorized Projects</h4>
+                    <p class="category-description">Projects that haven't been assigned to a category yet.</p>
+                    <div class="project-items"></div>
+                </div>
+                
                 <div class="project-category" id="todo-projects">
                     <h4>To Do's</h4>
+                    <p class="category-description">Projects with a to-do list structure.</p>
                     <div class="project-items"></div>
                 </div>
                 
                 <div class="project-category" id="parcomp-projects">
                     <h4>Par Comp's</h4>
+                    <p class="category-description">Projects with partial completion tracking.</p>
                     <div class="project-items"></div>
                 </div>
                 
                 <div class="project-category" id="oneoff-projects">
                     <h4>One Off's</h4>
+                    <p class="category-description">One-time projects without recurring tasks.</p>
                     <div class="project-items"></div>
                 </div>
                 
                 <div class="project-category" id="viewonly-projects">
                     <h4>View Only</h4>
+                    <p class="category-description">Projects visible for reference only.</p>
                     <div class="project-items"></div>
                 </div>
             </div>
@@ -654,11 +677,13 @@
                 <div class="form-group">
                     <label for="projectCategory">Project Category:</label>
                     <select id="projectCategory" class="form-select">
+                        <option value="">-- Select a category --</option>
                         <option value="todo">To Do's</option>
                         <option value="parcomp">Par Comp's</option>
                         <option value="oneoff">One Off's</option>
                         <option value="viewonly">View Only</option>
                     </select>
+                    <small class="form-text text-muted">Each category has different behavior and functionality.</small>
                 </div>
                 <button id="createProject" class="button">Create Project in Asana</button>
             </div>
@@ -848,6 +873,7 @@
         // Display projects in categories
         async function displayProjects(projects) {
             // Reset project containers
+            document.querySelector('#uncategorized-projects .project-items').innerHTML = '';
             document.querySelector('#todo-projects .project-items').innerHTML = '';
             document.querySelector('#parcomp-projects .project-items').innerHTML = '';
             document.querySelector('#oneoff-projects .project-items').innerHTML = '';
@@ -870,6 +896,7 @@
             
             // Categorize projects
             const categorizedProjects = {
+                uncategorized: [],
                 todo: [],
                 parcomp: [],
                 oneoff: [],
@@ -877,15 +904,15 @@
             };
             
             projects.forEach(project => {
-                let category = 'todo'; // Default category
-                
-                // Check if we have a saved category
                 const config = projectConfigs[project.gid];
-                if (config && config.category) {
-                    category = config.category;
-                }
                 
-                categorizedProjects[category].push(project);
+                // Only categorize if explicitly assigned
+                if (config && config.category && categorizedProjects[config.category]) {
+                    categorizedProjects[config.category].push(project);
+                } else {
+                    // If not categorized, put in uncategorized
+                    categorizedProjects.uncategorized.push(project);
+                }
             });
             
             // Display projects by category
@@ -925,6 +952,7 @@
                                 View Details & Configure
                             </button>
                             <select class="project-category-select" data-project-id="${project.gid}">
+                                <option value="">Uncategorized</option>
                                 <option value="todo" ${category === 'todo' ? 'selected' : ''}>To Do's</option>
                                 <option value="parcomp" ${category === 'parcomp' ? 'selected' : ''}>Par Comp's</option>
                                 <option value="oneoff" ${category === 'oneoff' ? 'selected' : ''}>One Off's</option>
@@ -984,6 +1012,10 @@
             }
             
             const projectCategory = projectCategorySelect.value;
+            if (!projectCategory) {
+                projectStatus.innerHTML = '<p class="error">Please select a project category</p>';
+                return;
+            }
             
             projectStatus.innerHTML = '<p>Creating project in Asana...</p>';
             
@@ -1102,6 +1134,7 @@
                 
                 if (currentProjects.length === 0) {
                     projectStatus.innerHTML = '<p class="error">No projects found in workspace</p>';
+                    document.querySelector('#uncategorized-projects .project-items').innerHTML = '<p>No projects found</p>';
                     document.querySelector('#todo-projects .project-items').innerHTML = '<p>No projects found</p>';
                     document.querySelector('#parcomp-projects .project-items').innerHTML = '<p>No projects found</p>';
                     document.querySelector('#oneoff-projects .project-items').innerHTML = '<p>No projects found</p>';
