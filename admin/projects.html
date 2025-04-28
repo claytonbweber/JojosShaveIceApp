@@ -482,6 +482,110 @@
             background-color: #f8d7da;
             border-color: #f5c6cb;
         }
+        
+        /* Project Category Styling */
+        .project-category {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #87CEEB;
+        }
+        
+        .project-category h4 {
+            color: #495057;
+            margin-top: 0;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        #todo-projects {
+            border-left-color: #fd7e14; /* Orange */
+        }
+        
+        #parcomp-projects {
+            border-left-color: #6610f2; /* Purple */
+        }
+        
+        #oneoff-projects {
+            border-left-color: #20c997; /* Teal */
+        }
+        
+        .project-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .project {
+            background-color: white;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .project:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 5px rgba(0,0,0,0.15);
+        }
+        
+        .project-category-select {
+            margin-left: 10px;
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
+        .actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Empty state styling */
+        .project-items p {
+            color: #6c757d;
+            font-style: italic;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        /* Project create form */
+        .project-create-form {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        /* Status badges */
+        .success {
+            color: #28a745;
+        }
+        
+        .error {
+            color: #dc3545;
+        }
+        
+        /* Make the form more attractive */
+        #projectsContainer > h3 {
+            margin-top: 30px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .actions {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .project-category-select {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -515,14 +619,39 @@
             <button id="fetchProjects" class="button secondary">Fetch Projects from Asana</button>
             <div id="projectStatus"></div>
             
-            <div id="projectList"></div>
-            
-            <h3>Add New Project</h3>
-            <div class="form-group">
-                <label for="projectName">Project Name:</label>
-                <input type="text" id="projectName" placeholder="Enter project name">
+            <div id="projectList">
+                <div class="project-category" id="todo-projects">
+                    <h4>To Do's</h4>
+                    <div class="project-items"></div>
+                </div>
+                
+                <div class="project-category" id="parcomp-projects">
+                    <h4>Par Comp's</h4>
+                    <div class="project-items"></div>
+                </div>
+                
+                <div class="project-category" id="oneoff-projects">
+                    <h4>One Off's</h4>
+                    <div class="project-items"></div>
+                </div>
             </div>
-            <button id="createProject" class="button">Create Project in Asana</button>
+            
+            <div class="project-create-form">
+                <h3>Add New Project</h3>
+                <div class="form-group">
+                    <label for="projectName">Project Name:</label>
+                    <input type="text" id="projectName" placeholder="Enter project name">
+                </div>
+                <div class="form-group">
+                    <label for="projectCategory">Project Category:</label>
+                    <select id="projectCategory" class="form-select">
+                        <option value="todo">To Do's</option>
+                        <option value="parcomp">Par Comp's</option>
+                        <option value="oneoff">One Off's</option>
+                    </select>
+                </div>
+                <button id="createProject" class="button">Create Project in Asana</button>
+            </div>
         </div>
         
         <div id="project-details" class="container mt-4 d-none">
@@ -634,8 +763,7 @@
         const sectionsList = document.getElementById('sectionsList');
         const createProjectBtn = document.getElementById('createProject');
         const projectNameInput = document.getElementById('projectName');
-        const createSectionBtn = document.getElementById('createSection');
-        const sectionNameInput = document.getElementById('sectionName');
+        const projectCategorySelect = document.getElementById('projectCategory');
         const sectionStatus = document.getElementById('sectionStatus');
         const backToProjectsBtn = document.getElementById('back-to-projects');
         const scheduleBySection = document.getElementById('scheduleBySection');
@@ -685,7 +813,6 @@
             if (!selectedOption.value) {
                 locationInfo.classList.add('hidden');
                 projectsContainer.classList.add('hidden');
-                projectDetail.classList.add('hidden');
                 return;
             }
             
@@ -703,71 +830,17 @@
             
             locationInfo.classList.remove('hidden');
             projectsContainer.classList.remove('hidden');
-            projectDetail.classList.add('hidden');
+            
+            // Load projects automatically when a location is selected
+            fetchProjects();
         });
         
-        // Fetch projects from Asana
-        fetchProjectsBtn.addEventListener('click', async function() {
-            if (!selectedLocation || !selectedLocation.asanaPAT) {
-                projectStatus.innerHTML = '<p class="error">No location selected or missing Asana PAT</p>';
-                return;
-            }
-            
-            projectStatus.innerHTML = '<p>Fetching projects from Asana...</p>';
-            
-            try {
-                const asanaUrl = `https://app.asana.com/api/1.0/workspaces`;
-                const headers = {
-                    'Authorization': `Bearer ${selectedLocation.asanaPAT}`,
-                    'Content-Type': 'application/json'
-                };
-                
-                // First get workspaces
-                const workspacesResponse = await fetch(asanaUrl, { headers });
-                if (!workspacesResponse.ok) {
-                    throw new Error(`Failed to fetch workspaces: ${workspacesResponse.statusText}`);
-                }
-                
-                const workspacesData = await workspacesResponse.json();
-                const workspaces = workspacesData.data;
-                
-                if (workspaces.length === 0) {
-                    projectStatus.innerHTML = '<p class="error">No workspaces found for this user</p>';
-                    return;
-                }
-                
-                // For simplicity, we'll use the first workspace
-                const workspaceId = workspaces[0].gid;
-                
-                // Now get projects in this workspace
-                const projectsUrl = `https://app.asana.com/api/1.0/workspaces/${workspaceId}/projects`;
-                const projectsResponse = await fetch(projectsUrl, { headers });
-                
-                if (!projectsResponse.ok) {
-                    throw new Error(`Failed to fetch projects: ${projectsResponse.statusText}`);
-                }
-                
-                const projectsData = await projectsResponse.json();
-                currentProjects = projectsData.data;
-                
-                if (currentProjects.length === 0) {
-                    projectStatus.innerHTML = '<p class="error">No projects found in workspace</p>';
-                    projectList.innerHTML = '';
-                    return;
-                }
-                
-                // Display projects
-                projectStatus.innerHTML = '<p class="success">Projects loaded successfully!</p>';
-                await displayProjects(currentProjects);
-            } catch (error) {
-                console.error('Error fetching projects:', error);
-                projectStatus.innerHTML = `<p class="error">Error: ${error.message}</p>`;
-            }
-        });
-        
-        // Display projects in the list
+        // Display projects in categories
         async function displayProjects(projects) {
-            projectList.innerHTML = '<h4>Available Projects</h4>';
+            // Reset project containers
+            document.querySelector('#todo-projects .project-items').innerHTML = '';
+            document.querySelector('#parcomp-projects .project-items').innerHTML = '';
+            document.querySelector('#oneoff-projects .project-items').innerHTML = '';
             
             // First fetch all project configurations for this location
             const projectConfigs = {};
@@ -784,35 +857,70 @@
                 console.error('Error loading project configurations:', error);
             }
             
+            // Categorize projects
+            const categorizedProjects = {
+                todo: [],
+                parcomp: [],
+                oneoff: []
+            };
+            
             projects.forEach(project => {
-                const config = projectConfigs[project.gid];
-                let scheduleInfo = 'Not scheduled';
-                let scheduleClass = 'error';
+                let category = 'todo'; // Default category
                 
-                if (config) {
-                    if (config.frequency) {
-                        scheduleInfo = `Scheduled ${config.frequency} at ${config.time}`;
-                        if (config.day && config.frequency !== 'daily') {
-                            const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                            scheduleInfo += ` on ${dayNames[config.day]}`;
-                        }
-                        scheduleClass = 'success';
-                    }
+                // Check if we have a saved category
+                const config = projectConfigs[project.gid];
+                if (config && config.category) {
+                    category = config.category;
                 }
                 
-                const projectDiv = document.createElement('div');
-                projectDiv.className = 'project';
-                projectDiv.innerHTML = `
-                    <h4>${project.name}</h4>
-                    <p><strong>Project ID:</strong> ${project.gid}</p>
-                    <p class="${scheduleClass}"><strong>Schedule:</strong> ${scheduleInfo}</p>
-                    <div class="actions">
-                        <button class="button view-project" data-id="${project.gid}" data-name="${project.name}">
-                            View Details & Configure
-                        </button>
-                    </div>
-                `;
-                projectList.appendChild(projectDiv);
+                categorizedProjects[category].push(project);
+            });
+            
+            // Display projects by category
+            Object.keys(categorizedProjects).forEach(category => {
+                const container = document.querySelector(`#${category}-projects .project-items`);
+                const projectsInCategory = categorizedProjects[category];
+                
+                if (projectsInCategory.length === 0) {
+                    container.innerHTML = '<p>No projects in this category</p>';
+                    return;
+                }
+                
+                projectsInCategory.forEach(project => {
+                    const config = projectConfigs[project.gid];
+                    let scheduleInfo = 'Not scheduled';
+                    let scheduleClass = 'error';
+                    
+                    if (config) {
+                        if (config.frequency) {
+                            scheduleInfo = `Scheduled ${config.frequency} at ${config.time}`;
+                            if (config.day && config.frequency !== 'daily') {
+                                const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                                scheduleInfo += ` on ${dayNames[config.day]}`;
+                            }
+                            scheduleClass = 'success';
+                        }
+                    }
+                    
+                    const projectDiv = document.createElement('div');
+                    projectDiv.className = 'project';
+                    projectDiv.innerHTML = `
+                        <h4>${project.name}</h4>
+                        <p><strong>Project ID:</strong> ${project.gid}</p>
+                        <p class="${scheduleClass}"><strong>Schedule:</strong> ${scheduleInfo}</p>
+                        <div class="actions">
+                            <button class="button view-project" data-id="${project.gid}" data-name="${project.name}">
+                                View Details & Configure
+                            </button>
+                            <select class="project-category-select" data-project-id="${project.gid}">
+                                <option value="todo" ${category === 'todo' ? 'selected' : ''}>To Do's</option>
+                                <option value="parcomp" ${category === 'parcomp' ? 'selected' : ''}>Par Comp's</option>
+                                <option value="oneoff" ${category === 'oneoff' ? 'selected' : ''}>One Off's</option>
+                            </select>
+                        </div>
+                    `;
+                    container.appendChild(projectDiv);
+                });
             });
             
             // Add event listeners to view project buttons
@@ -821,6 +929,30 @@
                     const projectId = this.dataset.id;
                     const projectName = this.dataset.name;
                     viewProject(projectId, projectName);
+                });
+            });
+            
+            // Add event listeners to category selects
+            document.querySelectorAll('.project-category-select').forEach(select => {
+                select.addEventListener('change', async function() {
+                    const projectId = this.dataset.projectId;
+                    const newCategory = this.value;
+                    
+                    try {
+                        // Update category in Firestore
+                        await db.collection('projectConfigurations').doc(projectId).set({
+                            category: newCategory,
+                            projectId: projectId,
+                            locationId: selectedLocation.id,
+                            updatedAt: new Date().toISOString()
+                        }, { merge: true });
+                        
+                        // Refresh projects display
+                        await fetchProjects();
+                    } catch (error) {
+                        console.error('Error updating project category:', error);
+                        alert('Failed to update project category: ' + error.message);
+                    }
                 });
             });
         }
@@ -837,6 +969,8 @@
                 projectStatus.innerHTML = '<p class="error">Please enter a project name</p>';
                 return;
             }
+            
+            const projectCategory = projectCategorySelect.value;
             
             projectStatus.innerHTML = '<p>Creating project in Asana...</p>';
             
@@ -886,17 +1020,89 @@
                 const createData = await createResponse.json();
                 const newProject = createData.data;
                 
+                // Save the project configuration with the category to Firestore
+                await db.collection('projectConfigurations').doc(newProject.gid).set({
+                    projectId: newProject.gid,
+                    projectName: newProject.name,
+                    category: projectCategory,
+                    locationId: selectedLocation.id,
+                    updatedAt: new Date().toISOString()
+                }, { merge: true });
+                
                 projectStatus.innerHTML = `<p class="success">Project "${newProject.name}" created successfully!</p>`;
                 projectNameInput.value = '';
                 
                 // Refresh project list
-                currentProjects.push(newProject);
-                await displayProjects(currentProjects);
+                await fetchProjects();
             } catch (error) {
                 console.error('Error creating project:', error);
                 projectStatus.innerHTML = `<p class="error">Error: ${error.message}</p>`;
             }
         });
+        
+        // Fetch projects from Asana
+        fetchProjectsBtn.addEventListener('click', fetchProjects);
+        
+        // Function to fetch projects
+        async function fetchProjects() {
+            if (!selectedLocation || !selectedLocation.asanaPAT) {
+                projectStatus.innerHTML = '<p class="error">No location selected or missing Asana PAT</p>';
+                return;
+            }
+            
+            projectStatus.innerHTML = '<p>Fetching projects from Asana...</p>';
+            
+            try {
+                const asanaUrl = `https://app.asana.com/api/1.0/workspaces`;
+                const headers = {
+                    'Authorization': `Bearer ${selectedLocation.asanaPAT}`,
+                    'Content-Type': 'application/json'
+                };
+                
+                // First get workspaces
+                const workspacesResponse = await fetch(asanaUrl, { headers });
+                if (!workspacesResponse.ok) {
+                    throw new Error(`Failed to fetch workspaces: ${workspacesResponse.statusText}`);
+                }
+                
+                const workspacesData = await workspacesResponse.json();
+                const workspaces = workspacesData.data;
+                
+                if (workspaces.length === 0) {
+                    projectStatus.innerHTML = '<p class="error">No workspaces found for this user</p>';
+                    return;
+                }
+                
+                // For simplicity, we'll use the first workspace
+                const workspaceId = workspaces[0].gid;
+                
+                // Now get projects in this workspace
+                const projectsUrl = `https://app.asana.com/api/1.0/workspaces/${workspaceId}/projects`;
+                const projectsResponse = await fetch(projectsUrl, { headers });
+                
+                if (!projectsResponse.ok) {
+                    throw new Error(`Failed to fetch projects: ${projectsResponse.statusText}`);
+                }
+                
+                const projectsData = await projectsResponse.json();
+                currentProjects = projectsData.data;
+                
+                if (currentProjects.length === 0) {
+                    projectStatus.innerHTML = '<p class="error">No projects found in workspace</p>';
+                    document.querySelector('#todo-projects .project-items').innerHTML = '<p>No projects found</p>';
+                    document.querySelector('#parcomp-projects .project-items').innerHTML = '<p>No projects found</p>';
+                    document.querySelector('#oneoff-projects .project-items').innerHTML = '<p>No projects found</p>';
+                    return;
+                }
+                
+                // Display projects
+                projectStatus.innerHTML = '<p class="success">Projects loaded successfully!</p>';
+                await displayProjects(currentProjects);
+            } catch (error) {
+                console.error('Error fetching projects:', error);
+                projectStatus.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
         
         // Initialize the project details view
         function initProjectDetails() {
